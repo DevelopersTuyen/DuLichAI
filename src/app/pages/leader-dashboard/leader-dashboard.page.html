@@ -171,6 +171,107 @@
     </div>
   </div>
 
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+          <div>
+            <div class="soft-label mb-2">Member Desk</div>
+            <h3 class="section-title mb-1">{{ text({ vi: 'Quan ly thanh vien, vi tri va lien lac', en: 'Member management, live location, and calling', ja: 'メンバー管理、位置確認、通話' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Day la noi leader xem ho so, biet khach dang o dau va goi nhanh khi can.', en: 'This is where the leader checks profiles, sees where guests are, and calls fast when needed.', ja: 'ここでリーダーはプロフィール確認、現在地把握、即時通話をまとめて行えます。' }) }}</p>
+          </div>
+          <span class="badge-soft brand">{{ memberRoster.length }} {{ text({ vi: 'khach uu tien', en: 'priority guests', ja: '優先ゲスト' }) }}</span>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-4" *ngFor="let item of memberOpsStats">
+            <div class="member-stat h-100">
+              <div class="soft-label mb-2">{{ text(item.label) }}</div>
+              <div class="metric-value mb-2" [class]="'tone-' + item.tone">{{ item.value }}</div>
+              <div class="small text-secondary">{{ text(item.note) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-3">
+          <div class="member-row" *ngFor="let guest of memberRoster">
+            <div class="d-flex align-items-start gap-3">
+              <span class="member-avatar" [class]="'tone-' + guest.tone">{{ guest.avatar }}</span>
+              <div class="flex-grow-1 min-w-0">
+                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-2">
+                  <div>
+                    <h4 class="h6 fw-bold mb-1">{{ guest.name }}</h4>
+                    <div class="small text-secondary">{{ text(guest.status) }} • Room {{ guest.room }}</div>
+                  </div>
+                  <span class="badge-soft" [class.brand]="guest.tone === 'brand'" [class.success]="guest.tone === 'success'" [class.warning]="guest.tone === 'warning'" [class.danger]="guest.tone === 'danger'">
+                    {{ guest.signal }}
+                  </span>
+                </div>
+
+                <div class="member-location mb-2">
+                  <strong>{{ text({ vi: 'Vi tri', en: 'Location', ja: '位置' }) }}:</strong>
+                  <span>{{ text(guest.location) }}</span>
+                </div>
+
+                <p class="small text-secondary mb-3">{{ text(guest.note) }}</p>
+
+                <div class="d-flex align-items-center gap-2 flex-wrap member-actions">
+                  <a class="btn btn-sm btn-outline-dark" routerLink="/app/leader/pax-master-list">{{ text({ vi: 'Ho so', en: 'Profile', ja: 'プロフィール' }) }}</a>
+                  <a class="btn btn-sm btn-outline-dark" routerLink="/app/leader/group-tracker">{{ text({ vi: 'Dinh vi', en: 'Locate', ja: '位置確認' }) }}</a>
+                  <a class="btn btn-sm btn-app-primary" routerLink="/app/leader/ops-hotlink">{{ text({ vi: 'Goi ngay', en: 'Call now', ja: '今すぐ通話' }) }}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Locate & Call</div>
+        <h3 class="section-title mb-3">{{ text({ vi: 'Duong dan nhanh cho leader', en: 'Fast leader shortcuts', ja: 'リーダー用ショートカット' }) }}</h3>
+
+        <div class="d-grid gap-3 mb-4">
+          <a class="member-shortcut" *ngFor="let item of memberActionBoard" [routerLink]="item.route">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-0">{{ text(item.note) }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="subtle-divider mb-4"></div>
+
+        <div class="soft-label mb-2">Current Reachability</div>
+        <div class="d-grid gap-3">
+          <div class="watch-card">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">GPS</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text({ vi: '31 thiet bi dang cap nhat vi tri', en: '31 devices reporting live location', ja: '31台が位置情報を更新中' }) }}</h4>
+                <p class="small text-secondary mb-0">{{ text({ vi: '1 khach dang bat che do tiet kiem pin, vi tri cuoi cung van con hop le.', en: '1 guest is in battery-saver mode but the last known position is still valid.', ja: '1名は省電力モードですが、最終位置はまだ有効です。' }) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="watch-card">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">CALL</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text({ vi: '6 lien he co the goi mot cham', en: '6 contacts available for one-tap call', ja: 'ワンタップ通話可能な連絡先 6 件' }) }}</h4>
+                <p class="small text-secondary mb-0">{{ text({ vi: 'Bao gom HQ, hotel duty manager, driver va line uu tien cua khach can theo doi.', en: 'Includes HQ, hotel duty manager, driver, and high-priority guest contacts.', ja: '本部、ホテル責任者、ドライバー、優先ゲスト連絡先を含みます。' }) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
   <div class="row g-4">
     <div class="col-12 col-lg-6" *ngFor="let chart of roleData.charts">
       <app-chart-card [config]="chart"></app-chart-card>

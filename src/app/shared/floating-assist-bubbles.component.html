@@ -1,9 +1,15 @@
-<ng-container *ngIf="currentUser() as user">
+<div class="floating-assist-root" *ngIf="currentUser() as user">
   <div class="floating-bubbles">
     <button type="button" class="floating-bubble chat" (click)="toggleChat()">
       <span class="bubble-icon">CHAT</span>
       <span class="bubble-label">{{ text(chatTitle) }}</span>
       <span class="bubble-count" *ngIf="comms.unreadChatCount() > 0">{{ comms.unreadChatCount() }}</span>
+    </button>
+
+    <button *ngIf="showAiBubble()" type="button" class="floating-bubble ai-nearby" (click)="toggleAiNearby()">
+      <span class="bubble-icon">AI</span>
+      <span class="bubble-label">{{ text(aiNearbyTitle) }}</span>
+      <span class="bubble-count">HOT</span>
     </button>
 
     <button type="button" class="floating-bubble sos" (click)="toggleSos()">
@@ -15,7 +21,7 @@
 
   <button *ngIf="comms.activePanel()" type="button" class="floating-backdrop" (click)="closePanel()"></button>
 
-  <aside class="floating-panel" [class.is-open]="comms.activePanel()" [class.chat-open]="comms.activePanel() === 'chat'" [class.sos-open]="comms.activePanel() === 'sos'">
+  <aside class="floating-panel" [class.is-open]="comms.activePanel()" [class.chat-open]="comms.activePanel() === 'chat'" [class.ai-open]="comms.activePanel() === 'local-ai'" [class.sos-open]="comms.activePanel() === 'sos'">
     <ng-container [ngSwitch]="comms.activePanel()">
       <section *ngSwitchCase="'chat'" class="panel-card p-0 overflow-hidden">
         <header class="panel-header">
@@ -52,6 +58,36 @@
             <button type="button" class="btn btn-app-primary" (click)="submitMessage()">{{ text({ vi: 'Gui tin', en: 'Send', ja: 'Send' }) }}</button>
           </div>
         </footer>
+      </section>
+
+      <section *ngSwitchCase="'local-ai'" class="panel-card p-0 overflow-hidden">
+        <header class="panel-header ai">
+          <div>
+            <div class="soft-label mb-1">{{ text(aiNearbyTitle) }}</div>
+            <h3 class="h5 fw-bold mb-1">{{ text({ vi: 'Goi y an ngon dep gan ban', en: 'Nearby food and photo picks', ja: 'Nearby food and photo picks' }) }}</h3>
+            <p class="small text-secondary mb-0">{{ text({ vi: 'Gia lap AI de xuat dia diem an uong, view dep va de di bo quanh vi tri hien tai.', en: 'Mock AI picks for tasty, photogenic places around your current area.', ja: 'Current area no chikaku de, tabeyasui and photogenic na place o AI ga teian shimasu.' }) }}</p>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-dark" (click)="closePanel()">Close</button>
+        </header>
+
+        <div class="panel-body">
+          <div class="quick-reply-row">
+            <button type="button" class="chip-button ai-chip" *ngFor="let prompt of aiNearbyPrompts()" (click)="useAiNearbyPrompt(prompt)">
+              {{ text(prompt) }}
+            </button>
+          </div>
+
+          <div class="chat-thread">
+            <article class="chat-bubble" *ngFor="let message of comms.aiNearbyMessages()" [class.self]="message.side === 'user'" [class.ai-nearby-bubble]="message.side === 'ai'">
+              <div class="chat-meta">
+                <strong>{{ message.sender }}</strong>
+                <span>{{ message.time }}</span>
+              </div>
+              <div class="chat-text">{{ text(message.text) }}</div>
+              <div class="small mt-2 text-secondary" *ngIf="message.meta">{{ text(message.meta) }}</div>
+            </article>
+          </div>
+        </div>
       </section>
 
       <section *ngSwitchCase="'sos'" class="panel-card p-0 overflow-hidden">
@@ -110,4 +146,4 @@
       </section>
     </ng-container>
   </aside>
-</ng-container>
+</div>

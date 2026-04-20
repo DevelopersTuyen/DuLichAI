@@ -18,7 +18,7 @@ export class FeatureDetailViewComponent {
 
   protected readonly store = inject(DemoStoreService);
   protected readonly feature = computed(() => this.store.feature(this.role(), this.slug()));
-  protected readonly rolePath = computed(() => `/${this.role()}`);
+  protected readonly rolePath = computed(() => `/app/${this.role()}`);
   protected readonly labels = {
     backToDashboard: lt('Về dashboard', 'Back to dashboard', 'ダッシュボードへ戻る'),
   };

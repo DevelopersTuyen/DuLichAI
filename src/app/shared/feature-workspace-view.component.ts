@@ -331,6 +331,29 @@ import { ChartCardComponent } from './chart-card.component';
                 </div>
               </ng-container>
 
+              <ng-container *ngSwitchCase="'planner'">
+                <div class="planner-demo">
+                  <div class="planner-profile">
+                    <div class="soft-label mb-2">AI profile</div>
+                    <div class="planner-chips">
+                      <span class="badge-soft brand">Couple</span>
+                      <span class="badge-soft success">Family</span>
+                      <span class="badge-soft warning">Kids</span>
+                    </div>
+                  </div>
+                  <div class="planner-card" *ngFor="let item of workspace.visual.items">
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+                      <div>
+                        <div class="fw-bold mb-1">{{ text(item.title) }}</div>
+                        <div class="small text-secondary">{{ text(item.meta) }}</div>
+                      </div>
+                      <span class="badge-soft" [ngClass]="toneClass(item.tone)">{{ item.badge }}</span>
+                    </div>
+                    <div class="small">{{ text(item.note) }}</div>
+                  </div>
+                </div>
+              </ng-container>
+
               <ng-container *ngSwitchCase="'chat'">
                 <div class="chat-demo">
                   <div class="chat-bubble user">Menu help?</div>

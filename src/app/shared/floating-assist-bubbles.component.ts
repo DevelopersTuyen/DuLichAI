@@ -27,9 +27,15 @@ export class FloatingAssistBubblesComponent {
     const user = this.currentUser();
     return user ? this.comms.quickReplies(user.role) : [];
   });
+  protected readonly aiNearbyPrompts = computed(() => this.comms.aiNearbyPrompts());
+  protected readonly showAiBubble = computed(() => this.currentUser()?.role === 'tourist');
 
   protected toggleChat(): void {
     this.comms.openPanel('chat');
+  }
+
+  protected toggleAiNearby(): void {
+    this.comms.openPanel('local-ai');
   }
 
   protected toggleSos(): void {
@@ -61,10 +67,15 @@ export class FloatingAssistBubblesComponent {
     this.comms.sendQuickReply(user.name, reply);
   }
 
+  protected useAiNearbyPrompt(prompt: TextLike): void {
+    this.comms.sendAiNearbyPrompt(prompt);
+  }
+
   protected text(value: TextLike | undefined): string {
     return this.store.text(value);
   }
 
   protected readonly chatTitle = lt('Nhan tin trong doan', 'Group Chat', 'Group Chat');
+  protected readonly aiNearbyTitle = lt('AI gan ban', 'AI Nearby', 'AI Nearby');
   protected readonly sosTitle = lt('Goi khan cap', 'Emergency Call', 'Emergency Call');
 }

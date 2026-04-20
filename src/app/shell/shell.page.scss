@@ -1,38 +1,129 @@
 .shell-wrap {
   min-height: 100dvh;
-  padding-top: calc(env(safe-area-inset-top) + 0.75rem);
+  padding-top: calc(env(safe-area-inset-top) + 0.25rem);
 }
 
 .shell-header {
   position: sticky;
   top: 0;
   z-index: 20;
-  padding-bottom: 1rem;
+  padding-bottom: 0.45rem;
 }
 
 .shell-header-card {
-  border-radius: 28px;
+  border-radius: 22px;
+}
+
+.shell-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.shell-user-block {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  flex: 1 1 auto;
 }
 
 .shell-avatar {
-  width: 3.4rem;
-  height: 3.4rem;
-  border-radius: 1.2rem;
+  width: 2.85rem;
+  height: 2.85rem;
+  border-radius: 0.95rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(11, 95, 255, 0.14), rgba(255, 122, 26, 0.18));
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.88rem;
+}
+
+.shell-user-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.shell-user-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.shell-user-chips .pill-chip,
+.shell-user-chips .badge-soft {
+  padding-top: 0.22rem;
+  padding-bottom: 0.22rem;
+  font-size: 0.64rem;
+}
+
+.shell-user-meta,
+.shell-actions {
+  min-width: 0;
+}
+
+.shell-user-name {
+  line-height: 1.05;
+  font-size: 0.98rem;
+  margin-bottom: 0 !important;
+}
+
+.shell-user-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.74rem;
 }
 
 .shell-main {
   padding-bottom: calc(6rem + env(safe-area-inset-bottom));
 }
 
+.shell-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+}
+
 .lang-switch .btn {
-  min-width: 3rem;
+  min-width: 2.7rem;
   border-radius: 999px;
+  padding: 0.34rem 0.72rem;
+  font-size: 0.72rem;
+}
+
+.shell-mobile-actions {
+  min-width: 0;
+}
+
+.shell-lang-select {
+  min-width: 4.15rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  padding-right: 1.8rem;
+}
+
+.shell-logout-btn {
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  padding: 0.34rem 0.72rem;
+}
+
+.shell-guide-btn {
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  padding: 0.34rem 0.72rem;
 }
 
 .shell-bottom-nav {
@@ -81,13 +172,105 @@
   font-weight: 800;
 }
 
-@media (min-width: 992px) {
+.bottom-code app-nav-icon {
+  display: inline-flex;
+  color: currentColor;
+}
+
+@media (max-width: 767.98px) {
   .shell-wrap {
-    padding-top: 1rem;
+    padding-top: calc(env(safe-area-inset-top) + 0.15rem);
   }
 
   .shell-header {
-    padding-top: 0.5rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .shell-header-card {
+    border-radius: 16px;
+    padding: 0.55rem !important;
+  }
+
+  .shell-header-top {
+    gap: 0.45rem;
+  }
+
+  .shell-user-block {
+    gap: 0.5rem;
+  }
+
+  .shell-avatar {
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 0.72rem;
+    font-size: 0.7rem;
+  }
+
+  .shell-user-copy {
+    gap: 0.15rem;
+  }
+
+  .shell-user-chips .pill-chip,
+  .shell-user-chips .badge-soft {
+    padding-top: 0.16rem;
+    padding-bottom: 0.16rem;
+    font-size: 0.58rem;
+  }
+
+  .shell-user-name {
+    font-size: 0.88rem;
+  }
+
+  .shell-actions {
+    align-self: stretch;
+    gap: 0.28rem;
+  }
+
+  .shell-lang-select,
+  .shell-logout-btn,
+  .shell-guide-btn {
+    height: 1.85rem;
+    font-size: 0.67rem;
+  }
+
+  .shell-logout-btn,
+  .shell-guide-btn {
+    padding-left: 0.52rem;
+    padding-right: 0.52rem;
+  }
+
+  .shell-bottom-nav {
+    padding: 0 0.7rem calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+
+  .shell-bottom-card {
+    max-width: 100%;
+    border-radius: 18px;
+    gap: 0.3rem;
+    padding: 0.35rem !important;
+  }
+
+  .bottom-link {
+    gap: 0.22rem;
+    font-size: 0.68rem;
+    padding: 0.42rem 0.18rem;
+    border-radius: 14px;
+  }
+
+  .bottom-code {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.62rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .shell-wrap {
+    padding-top: 0.35rem;
+  }
+
+  .shell-header {
+    padding-top: 0.1rem;
   }
 
   .shell-main {
@@ -95,6 +278,27 @@
   }
 
   .shell-header-card {
-    border-radius: 30px;
+    border-radius: 24px;
+  }
+
+  .shell-avatar {
+    width: 2.65rem;
+    height: 2.65rem;
+    border-radius: 0.9rem;
+    font-size: 0.82rem;
+  }
+
+  .shell-user-name {
+    font-size: 0.94rem;
+  }
+
+  .shell-user-title {
+    font-size: 0.72rem;
+  }
+
+  .lang-switch .btn,
+  .shell-logout-btn,
+  .shell-guide-btn {
+    font-size: 0.7rem;
   }
 }

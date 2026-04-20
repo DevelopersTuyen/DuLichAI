@@ -126,6 +126,91 @@ export class LeaderDashboardPage {
       note: lt('Passport, permit va insurance co the mo duoc khi mat song.', 'Passports, permits, and insurance remain available without signal.', '圏外でもパスポート、許可証、保険書類が表示可能。'),
     },
   ];
+  protected readonly memberOpsStats = [
+    {
+      label: lt('Ho so da dong bo', 'Profiles synced', '同期済みプロフィール'),
+      value: '32/32',
+      note: lt('Passport, room, medical note va emergency contact da san sang.', 'Passport, room, medical notes, and emergency contacts are ready.', 'パスポート、部屋、医療メモ、緊急連絡先を同期済み。'),
+      tone: 'brand',
+    },
+    {
+      label: lt('Dinh vi dang online', 'Live location online', '位置情報オンライン'),
+      value: '31',
+      note: lt('1 thiet bi dang tiet kiem pin nen cap nhat cham hon.', '1 device is in battery-saver mode and updates more slowly.', '1台は省電力モードのため更新が遅めです。'),
+      tone: 'success',
+    },
+    {
+      label: lt('Cuoc goi san sang', 'Call-ready contacts', '即時通話可能'),
+      value: '6',
+      note: lt('Khach uu tien, emergency contact va doi tac dieu hanh deu goi nhanh duoc.', 'Priority guests, emergency contacts, and ops partners are all ready for one-tap calling.', '優先ゲスト、緊急連絡先、運営パートナーへワンタップ発信可能。'),
+      tone: 'warning',
+    },
+  ];
+  protected readonly memberRoster = [
+    {
+      avatar: 'SY',
+      name: 'Sato Yuki',
+      room: '1208',
+      status: lt('An toan / da check-in', 'Safe / checked in', '安全 / チェックイン済み'),
+      location: lt('Ben Ninh Kieu / coach cluster', 'Ninh Kieu pier / coach cluster', 'ニンキウ埠頭 / コーチ集団'),
+      note: lt('Di ung tom. Emergency contact va menu note da ghim.', 'Shrimp allergy. Emergency contact and meal note are pinned.', 'エビアレルギー。緊急連絡先と食事メモを固定済み。'),
+      tone: 'success',
+      signal: 'GPS OK',
+    },
+    {
+      avatar: 'TK',
+      name: 'Tanaka Keiko',
+      room: '1211',
+      status: lt('Can doi chieu ho so', 'Profile follow-up', 'プロフィール確認中'),
+      location: lt('Lobby khach san / 42s truoc', 'Hotel lobby / 42s ago', 'ホテルロビー / 42秒前'),
+      note: lt('Passport can quet lai trang visa. Co the goi ngay tu roster.', 'Visa page needs a rescan. Can call directly from the member desk.', '査証ページの再スキャンが必要。メンバーデスクから即発信可能。'),
+      tone: 'warning',
+      signal: 'FOLLOW',
+    },
+    {
+      avatar: 'SK',
+      name: 'Suzuki Kenta',
+      room: '1103',
+      status: lt('Le nhom nhe', 'Soft drift alert', '軽度離脱アラート'),
+      location: lt('Cho dem sat riverside / 168m', 'Night market by riverside / 168m', 'リバーサイド夜市 / 168m'),
+      note: lt('Da mo meet-up pin. Neu qua 3 phut se chuyen sang goi truc tiep.', 'Meet-up pin already opened. If unresolved after 3 minutes, switch to direct call.', '集合ピンを開封済み。3分以内に戻らなければ直接通話へ切替。'),
+      tone: 'danger',
+      signal: 'LIVE',
+    },
+    {
+      avatar: 'YA',
+      name: 'Yamamoto Ai',
+      room: '0915',
+      status: lt('Can ho tro di chuyen', 'Mobility support', '移動サポート'),
+      location: lt('Bao tang indoor fallback / guide A', 'Indoor fallback museum / guide A', '屋内代替ミュージアム / ガイドA'),
+      note: lt('Can xe lan o chang san bay. Vi tri dang on dinh cung guide.', 'Needs wheelchair support on airport day. Position is stable with guide A.', '空港日は車椅子支援が必要。現在はガイドAと同行中。'),
+      tone: 'brand',
+      signal: 'CARE',
+    },
+  ];
+  protected readonly memberActionBoard = [
+    {
+      badge: 'PAX',
+      title: lt('Mo quan ly thanh vien', 'Open member management', 'メンバー管理を開く'),
+      note: lt('Danh sach doan, passport, visa, allergy va emergency contact.', 'Manifest, passport, visa, allergy, and emergency contacts.', '名簿、旅券、査証、アレルギー、緊急連絡先を確認。'),
+      route: '/app/leader/pax-master-list',
+      tone: 'brand',
+    },
+    {
+      badge: 'GPS',
+      title: lt('Dinh vi khach dang di le', 'Locate drifting guest', '離脱ゲストを追跡'),
+      note: lt('Mo Group Tracker voi pin meet-up va ban kinh canh bao.', 'Open Group Tracker with meet-up pin and geo-fence context.', '集合ピンとジオフェンス付きで Group Tracker を開く。'),
+      route: '/app/leader/group-tracker',
+      tone: 'warning',
+    },
+    {
+      badge: 'CALL',
+      title: lt('Goi nhanh khach / contact', 'Call guest or emergency contact', 'ゲスト / 緊急連絡先へ発信'),
+      note: lt('Ops Hotlink gom HQ, hotel, driver va line lien lac uu tien voi khach.', 'Ops Hotlink includes HQ, hotel, driver, and priority guest contact flows.', 'Ops Hotlink から本部、ホテル、ドライバー、優先ゲスト連絡へ即発信。'),
+      route: '/app/leader/ops-hotlink',
+      tone: 'danger',
+    },
+  ];
   protected readonly briefingSteps = [
     lt('Khoa manifest truoc khi chuyen chang de guide, hotel va ops dung chung 1 ban.', 'Lock the manifest before moving to the next leg so guide, hotel, and ops all use the same version.', '次区間移動前に名簿を固定し、ガイド・ホテル・本部で同版を使う。'),
     lt('Xu ly cac muc anh huong truc tiep den an toan va lich trinh truoc, sau do moi chot chi phi.', 'Resolve anything affecting safety and timing first, then close the financial items.', '安全と旅程に直結する項目を先に処理し、その後に会計を締める。'),

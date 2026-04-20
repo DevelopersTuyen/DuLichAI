@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { DemoListItem, LocalizedText, TextLike, Tone, UserRole, lt } from './demo-data';
 
-export type FloatingPanel = 'chat' | 'sos' | null;
+export type FloatingPanel = 'chat' | 'sos' | 'local-ai' | null;
 
 export interface DemoChatMessage {
   id: number;
@@ -25,6 +25,15 @@ export interface DemoEmergencyCall {
   contact: DemoEmergencyContact;
   status: 'dialing' | 'connected';
   startedAt: string;
+}
+
+export interface DemoAiNearbyMessage {
+  id: number;
+  sender: string;
+  side: 'user' | 'ai';
+  text: TextLike;
+  time: string;
+  meta?: TextLike;
 }
 
 const nowTime = () =>
@@ -81,6 +90,32 @@ export class DemoCommsService {
     },
   ]);
   readonly activeCall = signal<DemoEmergencyCall | null>(null);
+  readonly aiNearbyMessages = signal<DemoAiNearbyMessage[]>([
+    {
+      id: 1,
+      sender: 'AI Nearby',
+      side: 'ai',
+      text: lt(
+        'Gan ban co 3 lua chon hop voi khach Nhat: 1 rooftop nhe view song, 1 quan mon Viet de an va 1 cafe chup anh dep.',
+        'There are 3 Japanese-friendly picks nearby: a light rooftop with river view, an easy Vietnamese restaurant, and a photogenic cafe.',
+        'Nearby ni wa 3tsu no osusume ga arimasu: kawa view rooftop, tabeyasui Vietnam restaurant, photo映え cafe desu.'
+      ),
+      time: '18:06',
+      meta: lt('Ban kinh 900m / uu tien diem de di bo', 'Within 900m / walk-friendly first', 'Within 900m / walk-friendly first'),
+    },
+    {
+      id: 2,
+      sender: 'AI Nearby',
+      side: 'ai',
+      text: lt(
+        'Neu ban di cap doi, toi uu tien rooftop truoc 18:45, sau do toi di bo ven song vi it on hon cho dem.',
+        'If you are a couple, I would start with the rooftop before 18:45, then move to the riverside walk while it is still quieter.',
+        'Couple nara 18:45 mae no rooftop kara hajimete, sono ato quieter na riverside walk ga osusume desu.'
+      ),
+      time: '18:07',
+      meta: lt('Mood: romantic / short transfer', 'Mood: romantic / short transfer', 'Mood: romantic / short transfer'),
+    },
+  ]);
 
   private readonly responseQueue: TextLike[] = [
     lt(
@@ -99,8 +134,35 @@ export class DemoCommsService {
       'Leader ga kakunin shimashita. Isogi nara SOS Call kara sugu ni renraku dekimasu.'
     ),
   ];
+  private readonly aiNearbyResponseQueue: { text: TextLike; meta: TextLike }[] = [
+    {
+      text: lt(
+        'Gan nhat la Ninh Kieu Riverside Cafe, cach ban khoang 6 phut di bo. Noi nay hop de chup anh va ngoi nhe buoi chieu.',
+        'The closest option is Ninh Kieu Riverside Cafe, about a 6-minute walk away. It works well for photos and a light afternoon stop.',
+        'Ichiban chikai no wa Ninh Kieu Riverside Cafe de, aruite 6 fun kurai desu. Photo to light stop ni mukimasu.'
+      ),
+      meta: lt('Hop cho 2-4 nguoi / view dep / de bat xe ve', 'Best for 2-4 people / scenic / easy pickup back', 'Best for 2-4 people / scenic / easy pickup back'),
+    },
+    {
+      text: lt(
+        'Neu gia dinh co tre nho, toi bo qua rooftop va de xuat food hall trong nha co ghe cao, toilet gan va menu de an.',
+        'If you are traveling with kids, I would skip the rooftop and recommend an indoor food hall with high chairs, nearby toilets, and an easier menu.',
+        'Kodomo-zure nara rooftop wa hazushi, high chair, toilet, tabeyasui menu no indoor food hall ga osusume desu.'
+      ),
+      meta: lt('Family mode / giam di bo / uu tien nghi chan', 'Family mode / lower walking load / easy rest stops', 'Family mode / lower walking load / easy rest stops'),
+    },
+    {
+      text: lt(
+        'Neu nhom ban muon vui hon, toi goi y cho dem truoc, sau do sang cafe acoustic de vua an vua chup anh.',
+        'If your friend group wants something livelier, I suggest the night market first, then an acoustic cafe for food and photos.',
+        'Friends group nara night market kara hajimete, sono ato acoustic cafe de tabete photo mo totte ikemasu.'
+      ),
+      meta: lt('Friends mode / social / nhung van de goi xe', 'Friends mode / social / but still easy for pickup', 'Friends mode / social / easy pickup'),
+    },
+  ];
 
   private responseIndex = 0;
+  private aiNearbyIndex = 0;
 
   openPanel(panel: Exclude<FloatingPanel, null>): void {
     this.activePanel.set(this.activePanel() === panel ? null : panel);
@@ -112,6 +174,21 @@ export class DemoCommsService {
 
   closePanel(): void {
     this.activePanel.set(null);
+  }
+
+  sendAiNearbyPrompt(prompt: TextLike): void {
+    this.aiNearbyMessages.update((messages) => [
+      ...messages,
+      {
+        id: Date.now(),
+        sender: 'You',
+        side: 'user',
+        text: prompt,
+        time: nowTime(),
+      },
+    ]);
+
+    this.simulateAiNearbyResponse();
   }
 
   sendChatMessage(sender: string, text: string): void {
@@ -133,6 +210,14 @@ export class DemoCommsService {
     ]);
 
     this.simulateChatResponse();
+  }
+
+  aiNearbyPrompts(): TextLike[] {
+    return [
+      lt('Gan day co quan nao dep cho cap doi?', 'Any nice place nearby for a couple?', 'Couple ni yoi place wa chikaku ni arimasu ka?'),
+      lt('Gia dinh co con nho nen an o dau?', 'Where should a family with kids eat nearby?', 'Kodomo-zure family wa doko de taberu no ga ii desu ka?'),
+      lt('Muon cho vua ngon vua chup anh dep', 'I want something tasty and photogenic', 'Oishikute photo mo kirei na place ga ii desu'),
+    ];
   }
 
   sendQuickReply(sender: string, reply: TextLike): void {
@@ -297,5 +382,24 @@ export class DemoCommsService {
         this.unreadChatCount.update((count) => count + 1);
       }
     }, 700);
+  }
+
+  private simulateAiNearbyResponse(): void {
+    const response = this.aiNearbyResponseQueue[this.aiNearbyIndex % this.aiNearbyResponseQueue.length];
+    this.aiNearbyIndex += 1;
+
+    setTimeout(() => {
+      this.aiNearbyMessages.update((messages) => [
+        ...messages,
+        {
+          id: Date.now() + 2,
+          sender: 'AI Nearby',
+          side: 'ai',
+          text: response.text,
+          time: nowTime(),
+          meta: response.meta,
+        },
+      ]);
+    }, 550);
   }
 }

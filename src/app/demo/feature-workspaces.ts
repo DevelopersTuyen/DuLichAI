@@ -15,6 +15,7 @@ export type FeatureVisualType =
   | 'alert'
   | 'card'
   | 'guide'
+  | 'planner'
   | 'chat';
 
 export interface FeatureVisual {
@@ -62,6 +63,8 @@ export const featureWorkspaces: Record<string, FeatureWorkspace> = {
     quickActionsTitle: lt('Tac vu nhanh', 'Quick actions', 'クイック操作'),
     quickActions: [
       item('Export manifest PDF', 'Send a bilingual passenger sheet to guide and ops.', 'Includes allergy and passport flags.', 'PDF', 'brand'),
+      item('Open member dossier', 'Jump into the guest profile with passport, room, and emergency details.', 'Best when a leader needs one person fast.', 'PAX', 'brand'),
+      item('Call guest or emergency contact', 'Start a direct call from the passenger record.', 'Use when a guest is late or unreachable by push.', 'CALL', 'danger'),
       item('Lock passport audit', 'Freeze verified records before airport transfer.', 'A locked record will show who last changed it.', 'LOCK', 'success'),
       item('Send special-care digest', 'Push the medical and meal summary to hotel and restaurant.', 'Useful before rooming and dinner.', 'CARE', 'warning'),
     ],
@@ -194,11 +197,14 @@ export const featureWorkspaces: Record<string, FeatureWorkspace> = {
     quickActionsTitle: lt('Tac vu GPS', 'GPS actions', 'GPS操作'),
     quickActions: [
       item('Broadcast meet-up pin', 'Send the current rally point to all guests.', 'Works best before the coach moves.', 'PIN', 'brand'),
+      item('Locate specific guest', 'Focus the map on one passenger and latest timestamp.', 'Useful when the roster shows a soft drift alert.', 'GPS', 'brand'),
+      item('Call drifting guest', 'Dial the guest directly from the alert card.', 'Use after the meet-up pin if the guest keeps moving away.', 'CALL', 'danger'),
       item('Tighten geo-fence', 'Reduce radius from 250m to 150m.', 'Use near crowded markets.', 'RING', 'warning'),
       item('Escalate drift alert', 'Open Ops Hotlink with current coordinates.', 'Attach last seen timestamp.', 'HOT', 'danger'),
     ],
     watchTitle: lt('Theo doi vi tri', 'Position watchlist', '位置ウォッチ'),
     watchItems: [
+      item('Suzuki Kenta / drift alert', '168m from coach cluster, last update 18 seconds ago.', 'Direct call and map focus are both ready.', 'SK', 'danger'),
       item('Guest cluster / riverside market', '3 devices are outside the main coach cluster.', 'All still within the soft safety ring.', 'GPS', 'warning'),
       item('Leader beacon', 'Primary device battery is healthy at 74%.', 'No sync lag in the last 10 minutes.', 'LDR', 'success'),
       item('Coach destination', 'Next stop pin ready for auto reminder.', 'Broadcast scheduled 10 minutes before arrival.', 'NEXT', 'brand'),
@@ -370,11 +376,13 @@ export const featureWorkspaces: Record<string, FeatureWorkspace> = {
     quickActionsTitle: lt('Lien he nhanh', 'Fast contact actions', '即時連絡'),
     quickActions: [
       item('Call operations room', 'Open the primary escalation channel to headquarters.', 'Use for cross-team coordination.', 'HQ', 'danger'),
+      item('Call guest or emergency contact', 'Dial a guest, family contact, or bilingual support line directly.', 'Useful when a guest misses the meet-up or needs reassurance.', 'CALL', 'danger'),
       item('Ping hotel manager', 'Send a structured request with room and guest context.', 'Best for late arrivals and room issues.', 'HTL', 'brand'),
       item('Start partner bridge', 'Connect driver, guide, and ops on one thread.', 'Useful during route changes.', 'BRG', 'success'),
     ],
     watchTitle: lt('Lien he san sang', 'Ready contacts', '待機連絡先'),
     watchItems: [
+      item('Guest direct line / Suzuki Kenta', 'Japanese-speaking contact path with latest GPS context attached.', 'Open when the soft drift alert does not resolve quickly.', 'GST', 'danger'),
       item('HQ operations room', 'Average response time 38 seconds.', 'Use when multiple teams need the same update.', 'HQ', 'danger'),
       item('Hotel duty manager', 'Direct line active until 23:00.', 'Priority contact for rooming and baggage.', 'HTL', 'brand'),
       item('Boat / transport partner', 'Driver and dock manager both online.', 'Best for late boarding issues.', 'TRN', 'success'),
@@ -673,6 +681,51 @@ export const featureWorkspaces: Record<string, FeatureWorkspace> = {
         item('Quick clip', 'The shortest crossing video is ready to play', 'Built for at-the-curb use.', 'PLAY', 'brand'),
         item('Rule card', 'Steady pace and no stepping back', 'One simple behavior card.', 'RULE', 'success'),
         item('Group mode', 'Meet the leader before crossing busy roads', 'Safer in dense traffic zones.', 'SAFE', 'warning'),
+      ],
+    },
+  },
+  'ai-leisure-match': {
+    statusChips: [same('Preference AI'), same('Couple / family / kids'), same('Dining + leisure'), same('Shortlisted picks')],
+    assistantTitle: lt('Goi y profile du lich', 'Recommendation guidance', 'Recommendation guidance'),
+    assistantTips: [
+      same('The AI should explain why a place fits the group, not just list venues.'),
+      same('Family and kids profiles need seating comfort, toilets, and lower walking load.'),
+      same('Couple picks should balance atmosphere, views, and a short, low-friction route.'),
+    ],
+    quickActionsTitle: lt('Tac vu goi y', 'AI suggestion actions', 'AI suggestion actions'),
+    quickActions: [
+      item('Analyze as couple', 'Build a lighter evening route for 2 with views and quieter dining.', 'Good for Japan client demos with lifestyle positioning.', '2P', 'brand'),
+      item('Analyze as family with kids', 'Prioritize easy food, toilets, resting points, and child-friendly seating.', 'Useful for inbound families who want lower stress.', 'FAM', 'success'),
+      item('Analyze as friend group', 'Suggest lively food, photo spots, and social stops with safe pickup access.', 'Best for youth or incentive sub-groups.', 'FUN', 'warning'),
+      item('Shortlist 3 nearby picks', 'Return a fast ranked list with why-now explanations.', 'Optimized for mobile decisions while already outside.', 'TOP3', 'brand'),
+    ],
+    watchTitle: lt('Ho so de xuat', 'Recommendation watchlist', 'Recommendation watchlist'),
+    watchItems: [
+      item('Couple / sunset mood', 'Prefer scenic, quieter, and low-transfer stops after 17:00.', 'AI ranked rooftop lounge first, riverside walk second.', '2P', 'brand'),
+      item('Family / child-friendly dinner', 'Need soft seating, simple menu, and nearby restroom access.', 'AI filtered out loud street-market zones.', 'KID', 'success'),
+      item('Friends / lively but safe', 'Looking for social food and photo moments without scam-heavy areas.', 'AI balanced nightlife vibe with safer pickup points.', 'GRP', 'warning'),
+    ],
+    activityTitle: lt('Nhat ky de xuat', 'Recommendation activity', 'Recommendation activity'),
+    activityItems: [
+      item('Profile switched to couple mode', '17:10', 'The engine lowered noise tolerance and walking distance.', '2P', 'brand'),
+      item('Family filter applied', '16:42', 'Child seating and indoor options moved higher in the ranking.', 'FAM', 'success'),
+      item('3 top picks generated', '16:45', 'The app explained why each stop fits the current group.', 'TOP3', 'warning'),
+    ],
+    playbookTitle: lt('Flow su dung nhanh', 'Fast recommendation flow', 'Fast recommendation flow'),
+    playbookSteps: [
+      same('Choose who is traveling together: couple, family, kids, or friends.'),
+      same('Set the mood: scenic, easy meal, lively evening, or low-stress indoor stop.'),
+      same('Open the top 3 picks and follow the explanation card for why each place fits.'),
+    ],
+    visual: {
+      type: 'planner',
+      title: same('AI outing matcher'),
+      subtitle: same('Companion type, mood, and child-friendliness are combined into ranked food and leisure picks.'),
+      highlight: '12 picks',
+      items: [
+        item('Couple route', 'Sunset view, soft dinner, short riverside walk', 'Low-noise and photo-friendly.', '2P', 'brand'),
+        item('Family route', 'Indoor hall, easy menu, restroom nearby', 'Child-friendly and low walking load.', 'FAM', 'success'),
+        item('Friends route', 'Market food, cafe music, easy pickup point', 'More energy without losing safety.', 'FUN', 'warning'),
       ],
     },
   },

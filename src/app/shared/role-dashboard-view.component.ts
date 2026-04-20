@@ -30,6 +30,6 @@ export class RoleDashboardViewComponent {
   };
 
   protected featureRoute(slug: string): string[] {
-    return ['/', this.role(), slug];
+    return ['/app', this.role(), slug];
   }
 }

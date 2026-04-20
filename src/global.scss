@@ -100,6 +100,62 @@ a {
   font-weight: 800;
 }
 
+.desktop-code app-nav-icon {
+  display: inline-flex;
+  color: currentColor;
+}
+
+.shell-guide-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(17, 31, 58, 0.34);
+  backdrop-filter: blur(6px);
+}
+
+.shell-guide-modal {
+  width: min(100%, 620px);
+  max-height: min(82vh, 760px);
+  overflow: auto;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(24, 33, 47, 0.08);
+  box-shadow: 0 28px 60px rgba(17, 31, 58, 0.2);
+  padding: 1.1rem;
+}
+
+.shell-guide-close {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.shell-guide-section {
+  padding: 0.95rem 1rem;
+  border-radius: 18px;
+  background: rgba(247, 249, 253, 0.96);
+  border: 1px solid var(--app-line);
+}
+
+.shell-guide-item {
+  padding: 0.72rem 0.82rem;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(24, 33, 47, 0.06);
+  font-size: 0.88rem;
+  color: var(--app-text);
+}
+
 .app-page {
   padding-bottom: 6rem;
 }
@@ -318,6 +374,24 @@ a {
   }
 }
 
+@media (max-width: 767.98px) {
+  .shell-guide-backdrop {
+    padding: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .shell-guide-modal {
+    width: 100%;
+    max-height: min(78vh, 680px);
+    border-radius: 20px 20px 0 0;
+    padding: 0.95rem;
+  }
+
+  .shell-guide-item {
+    font-size: 0.82rem;
+  }
+}
+
 @media (min-width: 1200px) {
   .app-page {
     padding-bottom: 3rem;
@@ -437,7 +511,8 @@ a {
 .feature-workspace .visual-stack,
 .feature-workspace .folder-stack,
 .feature-workspace .route-stack,
-.feature-workspace .money-stack {
+.feature-workspace .money-stack,
+.feature-workspace .planner-demo {
   display: grid;
   gap: 1rem;
 }
@@ -664,6 +739,21 @@ a {
 
 .feature-workspace .chat-bubble.ai {
   background: #fff;
+}
+
+.feature-workspace .planner-profile,
+.feature-workspace .planner-card {
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--app-line);
+}
+
+.feature-workspace .planner-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
 }
 
 .feature-workspace .step-badge {

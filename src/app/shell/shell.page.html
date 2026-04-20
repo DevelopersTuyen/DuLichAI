@@ -1,31 +1,58 @@
 <div class="shell-wrap">
   <header class="shell-header">
     <div class="container-fluid shell-container px-3 px-md-4 px-xxl-5">
-      <div class="glass-card shell-header-card p-3 p-md-4">
-        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
-          <div class="d-flex align-items-start gap-3 flex-wrap" *ngIf="currentUser() as user">
+      <div class="glass-card shell-header-card p-2 p-md-3">
+        <div class="shell-header-top" *ngIf="currentUser() as user">
+          <div class="shell-user-block">
             <span class="shell-avatar">{{ user.avatar }}</span>
-            <div class="d-flex flex-column gap-2">
-              <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div class="shell-user-copy">
+              <div class="shell-user-chips">
                 <span class="pill-chip">{{ user.tourCode }}</span>
                 <span class="badge-soft" [class.brand]="user.role === 'leader'" [class.success]="user.role === 'tourist'">
                   {{ user.role }}
                 </span>
               </div>
-              <div>
-                <div class="soft-label mb-1">{{ user.email }}</div>
-                <h1 class="h5 mb-1 fw-bold">{{ user.name }}</h1>
-                <p class="text-secondary mb-0 small">{{ store.text(user.title) }}</p>
+              <div class="shell-user-meta">
+                <div class="soft-label mb-1 d-none d-xl-block">{{ user.email }}</div>
+                <h1 class="h5 mb-1 fw-bold shell-user-name">{{ user.name }}</h1>
+                <p class="text-secondary mb-0 small shell-user-title d-none d-md-block">{{ store.text(user.title) }}</p>
               </div>
             </div>
           </div>
 
-          <div class="d-flex align-items-center gap-2 lang-switch flex-wrap">
-            <button *ngFor="let item of languages" type="button" class="btn btn-sm" [class.btn-dark]="currentLang() === item.code" [class.btn-outline-dark]="currentLang() !== item.code" (click)="setLanguage(item.code)">
-              {{ store.text(item.label) }}
+          <div class="shell-actions">
+            <div class="d-none d-md-flex align-items-center gap-2 lang-switch flex-wrap">
+              <button
+                *ngFor="let item of languages"
+                type="button"
+                class="btn btn-sm"
+                [class.btn-dark]="currentLang() === item.code"
+                [class.btn-outline-dark]="currentLang() !== item.code"
+                (click)="setLanguage(item.code)"
+              >
+                {{ store.text(item.label) }}
+              </button>
+            </div>
+
+            <button type="button" class="btn btn-outline-dark btn-sm shell-guide-btn" (click)="openGuide()">
+              {{ store.text({ vi: 'HDSD app', en: 'App guide', ja: '使い方' }) }}
             </button>
-            <button type="button" class="btn btn-outline-danger btn-sm" (click)="logout()">
-              {{ store.text({ vi: 'Đăng xuất', en: 'Logout', ja: 'ログアウト' }) }}
+
+            <div class="shell-mobile-actions d-flex d-md-none">
+              <select
+                class="form-select form-select-sm shell-lang-select"
+                [value]="currentLang()"
+                (change)="selectLanguage(($any($event.target).value))"
+                aria-label="Language selector"
+              >
+                <option *ngFor="let item of languages" [value]="item.code">
+                  {{ store.text(item.label) }}
+                </option>
+              </select>
+            </div>
+
+            <button type="button" class="btn btn-outline-danger btn-sm shell-logout-btn" (click)="logout()">
+              {{ store.text({ vi: 'Dang xuat', en: 'Logout', ja: 'Logout' }) }}
             </button>
           </div>
         </div>
@@ -46,7 +73,7 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: item.route.endsWith('/leader') || item.route.endsWith('/tourist') }"
               >
-                <span class="desktop-code">{{ item.code }}</span>
+                <span class="desktop-code"><app-nav-icon [name]="item.icon"></app-nav-icon></span>
                 <span>{{ store.text(item.label) }}</span>
               </a>
             </div>
@@ -65,10 +92,40 @@
     </div>
   </main>
 
+  <div class="shell-guide-backdrop" *ngIf="guideOpen()" (click)="closeGuide()">
+    <div class="shell-guide-modal" *ngIf="roleGuide() as guide" (click)="$event.stopPropagation()">
+      <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+        <div>
+          <div class="soft-label mb-2">{{ currentUser()?.role }}</div>
+          <h2 class="h5 fw-bold mb-1">{{ store.text(guide.title) }}</h2>
+          <p class="text-secondary small mb-0">{{ store.text(guide.summary) }}</p>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-dark shell-guide-close" (click)="closeGuide()">×</button>
+      </div>
+
+      <div class="d-grid gap-3">
+        <section class="shell-guide-section" *ngFor="let section of guide.sections">
+          <h3 class="h6 fw-bold mb-2">{{ store.text(section.title) }}</h3>
+          <div class="d-grid gap-2">
+            <div class="shell-guide-item" *ngFor="let item of section.items">
+              {{ store.text(item) }}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
   <nav class="shell-bottom-nav d-lg-none">
     <div class="glass-card shell-bottom-card p-2">
-      <a class="bottom-link" *ngFor="let item of primaryNav()" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route.endsWith('/leader') || item.route.endsWith('/tourist') }">
-        <span class="bottom-code">{{ item.code }}</span>
+      <a
+        class="bottom-link"
+        *ngFor="let item of primaryNav()"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.route.endsWith('/leader') || item.route.endsWith('/tourist') }"
+      >
+        <span class="bottom-code"><app-nav-icon [name]="item.icon"></app-nav-icon></span>
         <span>{{ store.text(item.label) }}</span>
       </a>
     </div>

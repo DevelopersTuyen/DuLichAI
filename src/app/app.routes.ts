@@ -120,6 +120,12 @@ export const routes: Routes = [
           import('./pages/traffic-ninja/traffic-ninja.page').then((m) => m.TrafficNinjaPage),
       },
       {
+        path: 'tourist/ai-leisure-match',
+        canActivate: [roleGuard('tourist')],
+        loadComponent: () =>
+          import('./pages/ai-leisure-match/ai-leisure-match.page').then((m) => m.AiLeisureMatchPage),
+      },
+      {
         path: 'tourist/ai-local-buddy',
         canActivate: [roleGuard('tourist')],
         loadComponent: () =>

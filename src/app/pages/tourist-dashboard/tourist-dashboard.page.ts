@@ -45,6 +45,12 @@ export class TouristDashboardPage {
   ];
   protected readonly travelerActions = [
     {
+      route: '/app/tourist/ai-leisure-match',
+      badge: 'PICK',
+      title: lt('Mo goi y AI theo nhom', 'Open AI picks by group type', 'AI Picksを開く'),
+      note: lt('AI goi y diem an choi theo cap doi, gia dinh, tre nho va so nguoi di cung.', 'AI suggests food and leisure spots by couple, family, kids, and party size.', 'カップル、家族、子ども連れ、人数に応じて AI が候補を提案します。'),
+    },
+    {
       route: '/app/tourist/scam-alert',
       badge: 'SAFE',
       title: lt('Kiem tra canh bao khu vuc', 'Check nearby safety alerts', '周辺の安全注意を見る'),
@@ -101,6 +107,12 @@ export class TouristDashboardPage {
     },
   ];
   protected readonly helpMoments = [
+    {
+      badge: 'PICK',
+      time: '17:12',
+      title: lt('AI goi y lich buoi toi cho cap doi', 'AI suggested an evening route for a couple', 'AI Picks'),
+      note: lt('De xuat rooftop som, bua toi nhe va khu di bo yen tinh.', 'Suggested an early rooftop stop, light dinner, and a quieter walking area.', 'AI picks for a quiet evening route.'),
+    },
     {
       badge: 'TIP',
       time: '18:05',

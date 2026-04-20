@@ -954,6 +954,86 @@ const touristFeatures: FeatureDefinition[] = [
     ],
   },
   {
+    slug: 'ai-leisure-match',
+    role: 'tourist',
+    code: 'PICK',
+    title: lt('AI Leisure Match', 'AI Leisure Match', 'AI Leisure Match'),
+    summary: lt(
+      'AI goi y diem an uong va vui choi theo so thich, so nguoi di cung va boi canh nhu cap doi, gia dinh, tre nho hay nhom ban.',
+      'AI suggests food and leisure spots based on interests, party size, and context such as couples, families, kids, or friends.',
+      'AI ga shumi, ninzu, kappuru, kazoku, kodomo-zure, tomodachi group ni awasete shokuji to leisure no kobo o teian shimasu.'
+    ),
+    status: lt('12 goi y thong minh dang san sang', '12 smart recommendations ready', '12 smart recommendations ready'),
+    badge: lt('AI Picks', 'AI Picks', 'AI Picks'),
+    metrics: [
+      { label: lt('Ho so da phan tich', 'Profiles analyzed', 'Profiles analyzed'), value: '4', hint: lt('Cap doi, gia dinh, tre nho, nhom ban', 'Couple, family, kids, friends', 'Couple, family, kids, friends'), tone: 'brand' },
+      { label: lt('Goi y dang mo', 'Active picks', 'Active picks'), value: '12', hint: lt('An uong + giai tri + nghi chan', 'Dining + leisure + rest stops', 'Dining + leisure + rest stops'), tone: 'success' },
+      { label: lt('Do phu hop', 'Match score', 'Match score'), value: '94%', hint: lt('Can bang giua vi tri, vibe va nhom di cung', 'Balances location, vibe, and companion type', 'Balances location, vibe, and companion type'), tone: 'warning' },
+    ],
+    chart: {
+      title: lt('Loai goi y AI dang uu tien', 'AI recommendation mix', 'AI recommendation mix'),
+      note: lt('Mau de xuat cho khach Nhat theo nhom di cung va so thich.', 'Sample recommendation distribution for Japanese travelers by companion type and taste.', 'Sample recommendation distribution for Japanese travelers by companion type and taste.'),
+      type: 'bar',
+      labels: [lt('Cap doi', 'Couple', 'Couple'), lt('Gia dinh', 'Family', 'Family'), lt('Tre nho', 'With kids', 'With kids'), lt('Nhom ban', 'Friends', 'Friends')],
+      datasets: [
+        {
+          label: lt('So goi y', 'Suggestions', 'Suggestions'),
+          data: [3, 4, 2, 3],
+          backgroundColor: ['#0b5fff', '#73b0ff', '#0c8a64', '#ffb547'],
+        },
+      ],
+    },
+    sections: [
+      {
+        kind: 'table',
+        title: lt('Mau profile AI', 'AI profile matrix', 'AI profile matrix'),
+        subtitle: lt('AI ghep nhom di cung, mood va nhu cau de de xuat diem phu hop.', 'AI combines companion type, mood, and needs to rank suitable spots.', 'AI combines companion type, mood, and needs to rank suitable spots.'),
+        columns: [lt('Nhom', 'Group', 'Group'), lt('So thich', 'Preference', 'Preference'), lt('Tre nho', 'Kids', 'Kids'), lt('Goi y dau', 'First pick', 'First pick')],
+        rows: [
+          { cells: [lt('Cap doi', 'Couple', 'Couple'), lt('View dep + an nhe', 'Views + light dining', 'Views + light dining'), lt('Khong', 'No', 'No'), lt('Sunset rooftop + riverside walk', 'Sunset rooftop + riverside walk', 'Sunset rooftop + riverside walk')], tone: 'brand' },
+          { cells: [lt('Gia dinh 4 nguoi', 'Family of 4', 'Family of 4'), lt('An de chon + cho ngoi thoai mai', 'Easy food + relaxed seating', 'Easy food + relaxed seating'), lt('Co', 'Yes', 'Yes'), lt('Indoor food hall + soft play corner', 'Indoor food hall + soft play corner', 'Indoor food hall + soft play corner')], tone: 'success' },
+          { cells: [lt('Nhom ban', 'Friends', 'Friends'), lt('Song dong + chup anh', 'Lively + photo spots', 'Lively + photo spots'), lt('Khong', 'No', 'No'), lt('Night market + live music cafe', 'Night market + live music cafe', 'Night market + live music cafe')], tone: 'warning' },
+        ],
+      },
+      {
+        kind: 'list',
+        title: lt('Goi y AI noi bat', 'Highlighted AI picks', 'Highlighted AI picks'),
+        items: [
+          {
+            title: lt('Cap doi / sunset can tho', 'Couple / Can Tho sunset route', 'Couple / sunset route'),
+            meta: lt('Rooftop som, bua toi nhe, di bo ven song 90 phut', 'Early rooftop, light dinner, 90-minute riverside walk', 'Early rooftop, light dinner, 90-minute riverside walk'),
+            note: lt('Uu tien view dep, it on ao va khoang cach di chuyen ngan.', 'Prioritizes views, low noise, and short transfers.', 'Prioritizes views, low noise, and short transfers.'),
+            badge: 'COUPLE',
+            tone: 'brand',
+          },
+          {
+            title: lt('Gia dinh co con nho / buoi chieu trong nha', 'Family with kids / indoor afternoon', 'Family with kids / indoor afternoon'),
+            meta: lt('Food hall, khu nghi chan, toilet gan va cho ngoi rong', 'Food hall, rest area, nearby toilets, and wide seating', 'Food hall, rest area, nearby toilets, and wide seating'),
+            note: lt('Giam di bo ngoai troi va uu tien diem co ghe cao tre em.', 'Reduces outdoor walking and prefers child-friendly seating.', 'Reduces outdoor walking and prefers child-friendly seating.'),
+            badge: 'FAMILY',
+            tone: 'success',
+          },
+          {
+            title: lt('Nhom ban / toi song dong', 'Friends / lively evening route', 'Friends / lively evening route'),
+            meta: lt('Cho dem, mon an de share, cafe nhac nhe va diem chup anh', 'Night market, shareable food, cafe with music, and photo spots', 'Night market, shareable food, cafe with music, and photo spots'),
+            note: lt('Can bang giua vui, an toan va kha nang bat xe ve khach san.', 'Balances fun, safety, and easy pickup back to the hotel.', 'Balances fun, safety, and easy pickup back to the hotel.'),
+            badge: 'FRIEND',
+            tone: 'warning',
+          },
+        ],
+      },
+      {
+        kind: 'steps',
+        title: lt('Cach AI ra de xuat', 'How AI builds picks', 'How AI builds picks'),
+        steps: [
+          lt('Nhan profile nhom: cap doi, gia dinh, co tre nho hoac nhom ban.', 'Read the group profile: couple, family, kids, or friends.', 'Read the group profile first.'),
+          lt('Ghep so thich voi thoi diem, khoang cach, muc nang luong va do on ao.', 'Match preferences against timing, distance, energy level, and noise.', 'Match taste against timing, distance, energy, and noise.'),
+          lt('Tra ve 2-3 phuong an co ly do ro rang va de mo duong di tiep.', 'Return 2-3 ranked options with a clear explanation.', 'Return 2-3 ranked options with a clear explanation.'),
+        ],
+      },
+    ],
+  },
+  {
     slug: 'ai-local-buddy',
     role: 'tourist',
     code: 'AI',

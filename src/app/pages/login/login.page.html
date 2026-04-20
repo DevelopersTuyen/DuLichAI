@@ -3,21 +3,16 @@
     <div class="row g-4 align-items-stretch">
       <div class="col-12 col-xl-6">
         <article class="glass-card p-4 p-lg-5 h-100 login-hero">
-          <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
-            <div class="d-flex flex-column gap-2">
-              <span class="pill-chip">Demo Access</span>
-              <div>
-                <div class="soft-label mb-1">Tour Operations + Smart Travel</div>
-                <h1 class="display-6 fw-bold mb-2">{{ store.text(store.catalog.home.productName) }}</h1>
-                <p class="text-secondary mb-0">{{ store.text(store.catalog.home.tagline) }}</p>
-              </div>
+          <div class="login-topbar mb-4">
+            <div>
+              <span class="pill-chip">Tour Demo</span>
             </div>
 
             <div class="d-flex align-items-center gap-2">
               <button
                 *ngFor="let item of languages"
                 type="button"
-                class="btn btn-sm"
+                class="btn btn-sm login-lang-btn"
                 [class.btn-dark]="store.lang() === item.code"
                 [class.btn-outline-dark]="store.lang() !== item.code"
                 (click)="setLanguage(item.code)"
@@ -27,22 +22,31 @@
             </div>
           </div>
 
-          <div class="row g-3 mb-4">
-            <div class="col-12 col-md-4" *ngFor="let item of store.catalog.home.heroStats">
-              <div class="metric-card h-100">
-                <div class="soft-label mb-2">{{ store.text(item.label) }}</div>
-                <div class="metric-value mb-2" [class]="'tone-' + (item.tone || 'brand')">{{ item.value }}</div>
-                <div class="metric-hint">{{ store.text(item.hint) }}</div>
-              </div>
+          <div class="login-copy mb-4">
+            <div class="soft-label mb-2">Tour Control / Travel Assist</div>
+            <h1 class="login-title mb-2">
+              {{ store.text({ vi: 'Dieu hanh thong minh cho tour quoc te', en: 'Smart tour control for inbound groups', ja: 'Inbound tour no smart control' }) }}
+            </h1>
+            <p class="login-subtitle mb-0">
+              {{ store.text({ vi: 'Toi gian, ro rang, uu tien demo nhanh cho khach Nhat.', en: 'Minimal, clear, and presentation-ready for Japanese clients.', ja: 'Minimal, clear, and ready for Japanese client demos.' }) }}
+            </p>
+          </div>
+
+          <div class="hero-metrics mb-4">
+            <div class="hero-metric" *ngFor="let item of store.catalog.home.heroStats">
+              <div class="hero-metric-label">{{ store.text(item.label) }}</div>
+              <div class="hero-metric-value" [class]="'tone-' + (item.tone || 'brand')">{{ item.value }}</div>
             </div>
           </div>
 
-          <div class="panel-card p-3 p-lg-4">
-            <div class="soft-label mb-2">Login Story</div>
-            <h2 class="section-title mb-2">{{ helperTitle() }}</h2>
-            <p class="text-secondary mb-4">
-              {{ store.text({ vi: 'Bấm vào một tài khoản để đi vào app như người dùng thật. Mỗi tài khoản có ngôn ngữ và vai trò sẵn.', en: 'Tap an account to enter the app as a real user. Each account has a preset role and language.', ja: '任意のアカウントを選ぶと、実際の利用者のようにアプリへ入れます。各アカウントに役割と言語設定があります。' }) }}
-            </p>
+          <div class="panel-card login-account-panel p-3 p-lg-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+              <div>
+                <div class="soft-label mb-1">Quick Login</div>
+                <h2 class="section-title mb-0">{{ helperTitle() }}</h2>
+              </div>
+              <span class="badge-soft brand">3</span>
+            </div>
 
             <div class="d-grid gap-3">
               <button
@@ -51,17 +55,19 @@
                 *ngFor="let account of auth.accounts"
                 (click)="auth.quickLogin(account.id)"
               >
-                <div class="d-flex align-items-start gap-3">
+                <div class="d-flex align-items-center gap-3">
                   <span class="account-avatar">{{ account.avatar }}</span>
-                  <div class="flex-grow-1">
-                    <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-1">
-                      <h3 class="h6 fw-bold mb-0">{{ account.name }}</h3>
+                  <div class="flex-grow-1 min-w-0">
+                    <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                      <h3 class="h6 fw-bold mb-0 text-truncate">{{ account.name }}</h3>
                       <span class="badge-soft" [class.brand]="account.role === 'leader'" [class.success]="account.role === 'tourist'">
                         {{ account.role }}
                       </span>
                     </div>
-                    <p class="small text-secondary mb-1">{{ store.text(account.title) }}</p>
-                    <p class="small text-secondary mb-0">{{ account.email }} / {{ account.password }}</p>
+                    <div class="account-meta-row">
+                      <span>{{ store.text(account.title) }}</span>
+                      <span>{{ account.defaultLang.toUpperCase() }}</span>
+                    </div>
                   </div>
                 </div>
               </button>
@@ -71,18 +77,18 @@
       </div>
 
       <div class="col-12 col-xl-6">
-        <article class="panel-card p-4 p-lg-5 h-100">
+        <article class="panel-card p-4 p-lg-5 h-100 login-form-panel">
           <div class="soft-label mb-2">Sign In</div>
-          <h2 class="section-title mb-2">{{ store.text({ vi: 'Đăng nhập như app thật', en: 'Sign in like a real app', ja: '実アプリのようにサインイン' }) }}</h2>
-          <p class="text-secondary mb-4">
-            {{ store.text({ vi: 'Dành cho web demo và app mobile. Có thể dùng nút quick login hoặc nhập thông tin cố định.', en: 'Works for both web demo and mobile app. Use quick login or type the fixed credentials.', ja: 'Webデモとモバイルアプリの両方に対応。クイックログインか固定認証情報を使えます。' }) }}
+          <h2 class="section-title mb-1">{{ store.text({ vi: 'Dang nhap', en: 'Sign in', ja: 'Sign in' }) }}</h2>
+          <p class="text-secondary login-form-note mb-4">
+            {{ store.text({ vi: 'Nhap tai khoan demo co san.', en: 'Use the preset demo credentials.', ja: 'Preset demo credentials o shiyou.' }) }}
           </p>
 
-          <div class="d-grid gap-3 mb-4">
+          <div class="login-form-grid d-grid gap-3 mb-4">
             <label class="form-label mb-0">
-              <span class="soft-label mb-2 d-block">{{ store.text({ vi: 'Email demo', en: 'Demo email', ja: 'デモメール' }) }}</span>
+              <span class="soft-label mb-2 d-block">{{ store.text({ vi: 'Email', en: 'Email', ja: 'Email' }) }}</span>
               <input
-                class="form-control form-control-lg"
+                class="form-control form-control-lg login-input"
                 [ngModel]="form().email"
                 (ngModelChange)="updateField('email', $event)"
                 type="email"
@@ -90,9 +96,9 @@
             </label>
 
             <label class="form-label mb-0">
-              <span class="soft-label mb-2 d-block">{{ store.text({ vi: 'Mật khẩu', en: 'Password', ja: 'パスワード' }) }}</span>
+              <span class="soft-label mb-2 d-block">{{ store.text({ vi: 'Mat khau', en: 'Password', ja: 'Password' }) }}</span>
               <input
-                class="form-control form-control-lg"
+                class="form-control form-control-lg login-input"
                 [ngModel]="form().password"
                 (ngModelChange)="updateField('password', $event)"
                 type="password"
@@ -101,17 +107,16 @@
           </div>
 
           <button type="button" class="btn btn-app-primary btn-lg w-100 mb-3" (click)="submit()">
-            {{ store.text({ vi: 'Vào ứng dụng', en: 'Enter app', ja: 'アプリへ入る' }) }}
+            {{ store.text({ vi: 'Vao he thong', en: 'Enter system', ja: 'Enter system' }) }}
           </button>
 
           <div class="alert alert-warning mb-4" *ngIf="message()">{{ message() }}</div>
 
-          <div class="panel-card p-3 border-0 shadow-none bg-light-subtle">
-            <div class="soft-label mb-2">Demo Notes</div>
-            <div class="d-grid gap-2 small">
-              <div>{{ store.text({ vi: 'Tài khoản 1: tour leader quản lý toàn đoàn.', en: 'Account 1: tour leader managing the whole group.', ja: 'アカウント1: 団体全体を管理するツアーリーダー。' }) }}</div>
-              <div>{{ store.text({ vi: 'Tài khoản 2: khách Nhật ưu tiên an toàn và dị ứng.', en: 'Account 2: Japanese guest focused on safety and allergies.', ja: 'アカウント2: 安全とアレルギーを重視する日本人旅行者。' }) }}</div>
-              <div>{{ store.text({ vi: 'Tài khoản 3: khách dùng tiếng Anh, nhấn vào scanner và AI buddy nhiều hơn.', en: 'Account 3: English-speaking guest focused on scanner and AI buddy.', ja: 'アカウント3: 英語利用者で、紙幣認識とAIバディを多く使います。' }) }}</div>
+          <div class="login-mini-guide">
+            <div class="soft-label mb-2">Preset</div>
+            <div class="login-guide-grid">
+              <div class="guide-chip">{{ auth.accounts[0].email }}</div>
+              <div class="guide-chip">{{ auth.accounts[0].password }}</div>
             </div>
           </div>
         </article>

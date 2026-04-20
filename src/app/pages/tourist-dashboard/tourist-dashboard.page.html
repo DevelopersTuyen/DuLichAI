@@ -37,17 +37,17 @@
         <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
           <div>
             <div class="soft-label mb-2">Traveler Starter</div>
-            <h3 class="section-title mb-1">{{ text({ vi: '3 man hinh de mo dau demo', en: '3 screens to open the demo', ja: 'デモ導入に見せる 3 画面' }) }}</h3>
-            <p class="text-secondary mb-0">{{ text({ vi: 'Cac thao tac nay de hieu, hop voi khach Nhat va rat dung ngu canh “safe travel in Vietnam”.', en: 'These actions are clear, client-friendly, and fit the “safe travel in Vietnam” story.', ja: '分かりやすく、日本向け提案で「ベトナムを安全に旅する」文脈に合う導入です。' }) }}</p>
+            <h3 class="section-title mb-1">{{ text({ vi: '4 man hinh de mo dau demo', en: '4 screens to open the demo', ja: 'Demo starter 4 screens' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Cac thao tac nay de hieu, hop voi khach Nhat va rat dung ngu canh safe travel in Vietnam.', en: 'These actions are clear, client-friendly, and fit the safe travel in Vietnam story.', ja: 'Japanese client demo ni miseyasui, safe travel in Vietnam no flow desu.' }) }}</p>
           </div>
         </div>
 
         <div class="row g-3 mb-4">
-          <div class="col-12 col-lg-4" *ngFor="let action of travelerActions">
+          <div class="col-12 col-lg-6" *ngFor="let action of travelerActions">
             <a class="traveler-action h-100 d-block" [routerLink]="action.route">
               <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
                 <span class="feature-code">{{ action.badge }}</span>
-                <span class="badge-soft brand">{{ text({ vi: 'Mo ngay', en: 'Open now', ja: 'すぐ開く' }) }}</span>
+                <span class="badge-soft brand">{{ text({ vi: 'Mo ngay', en: 'Open now', ja: 'Open now' }) }}</span>
               </div>
               <h4 class="h6 fw-bold mb-2">{{ text(action.title) }}</h4>
               <p class="small text-secondary mb-0">{{ text(action.note) }}</p>
@@ -60,8 +60,8 @@
         <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
           <div>
             <div class="soft-label mb-2">Travel Toolkit</div>
-            <h3 class="section-title mb-1">{{ text({ vi: '5 cong cu cho du khach', en: '5 traveler tools', ja: '旅行者向け 5 ツール' }) }}</h3>
-            <p class="text-secondary mb-0">{{ text({ vi: 'Moi tinh nang la mot trang rieng tren web va app mobile.', en: 'Each feature opens as its own page on both web and mobile.', ja: '各機能は Web とモバイルの両方で独立ページとして開きます。' }) }}</p>
+            <h3 class="section-title mb-1">{{ features.length }} {{ text({ vi: 'cong cu cho du khach', en: 'traveler tools', ja: 'traveler tools' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Moi tinh nang la mot trang rieng tren web va app mobile.', en: 'Each feature opens as its own page on both web and mobile.', ja: 'Each feature opens as its own page on both web and mobile.' }) }}</p>
           </div>
         </div>
 
@@ -111,8 +111,9 @@
         </div>
 
         <div class="d-grid gap-2">
-          <button class="btn btn-app-primary" routerLink="/app/tourist/scam-alert">{{ text({ vi: 'Mo canh bao an toan', en: 'Open safety alerts', ja: '安全警告を開く' }) }}</button>
-          <button class="btn btn-outline-dark" routerLink="/app/tourist/ai-local-buddy">{{ text({ vi: 'Hoi AI buddy', en: 'Ask AI buddy', ja: 'AI buddy に聞く' }) }}</button>
+          <button class="btn btn-app-primary" routerLink="/app/tourist/ai-leisure-match">{{ text({ vi: 'Mo goi y AI', en: 'Open AI picks', ja: 'Open AI Picks' }) }}</button>
+          <button class="btn btn-outline-dark" routerLink="/app/tourist/scam-alert">{{ text({ vi: 'Mo canh bao an toan', en: 'Open safety alerts', ja: 'Open safety alerts' }) }}</button>
+          <button class="btn btn-outline-dark" routerLink="/app/tourist/ai-local-buddy">{{ text({ vi: 'Hoi AI buddy', en: 'Ask AI buddy', ja: 'Ask AI buddy' }) }}</button>
         </div>
       </article>
     </div>
