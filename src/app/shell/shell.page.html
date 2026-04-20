@@ -35,7 +35,7 @@
             </div>
 
             <button type="button" class="btn btn-outline-dark btn-sm shell-guide-btn" (click)="openGuide()">
-              {{ store.text({ vi: 'HDSD app', en: 'App guide', ja: '使い方' }) }}
+              {{ store.text({ vi: 'HDSD', en: 'Guide', ja: 'Guide' }) }}
             </button>
 
             <div class="shell-mobile-actions d-flex d-md-none">
@@ -100,7 +100,7 @@
           <h2 class="h5 fw-bold mb-1">{{ store.text(guide.title) }}</h2>
           <p class="text-secondary small mb-0">{{ store.text(guide.summary) }}</p>
         </div>
-        <button type="button" class="btn btn-sm btn-outline-dark shell-guide-close" (click)="closeGuide()">×</button>
+        <button type="button" class="btn btn-sm btn-outline-dark shell-guide-close" (click)="closeGuide()">X</button>
       </div>
 
       <div class="d-grid gap-3">

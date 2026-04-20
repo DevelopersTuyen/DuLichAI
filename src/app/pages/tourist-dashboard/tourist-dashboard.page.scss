@@ -40,6 +40,8 @@
 .tourist-dashboard-page .traveler-action,
 .tourist-dashboard-page .travel-tool {
   color: inherit;
+  display: flex;
+  flex-direction: column;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -52,6 +54,16 @@
 .tourist-dashboard-page .journey-card {
   display: flex;
   align-items: flex-start;
+}
+
+.tourist-dashboard-page .traveler-action p,
+.tourist-dashboard-page .travel-tool p,
+.tourist-dashboard-page .help-card p,
+.tourist-dashboard-page .tip-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tourist-dashboard-page .step-badge {

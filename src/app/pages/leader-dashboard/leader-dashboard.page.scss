@@ -44,6 +44,8 @@
 .leader-dashboard-page .command-card,
 .leader-dashboard-page .ops-module {
   color: inherit;
+  display: flex;
+  flex-direction: column;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -61,6 +63,15 @@
 .leader-dashboard-page .member-shortcut:hover {
   transform: translateY(-2px);
   box-shadow: 0 18px 32px rgba(17, 31, 58, 0.08);
+}
+
+.leader-dashboard-page .command-card p,
+.leader-dashboard-page .ops-module p,
+.leader-dashboard-page .member-shortcut p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .leader-dashboard-page .member-avatar {

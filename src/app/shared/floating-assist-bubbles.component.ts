@@ -28,7 +28,7 @@ export class FloatingAssistBubblesComponent {
     return user ? this.comms.quickReplies(user.role) : [];
   });
   protected readonly aiNearbyPrompts = computed(() => this.comms.aiNearbyPrompts());
-  protected readonly showAiBubble = computed(() => this.currentUser()?.role === 'tourist');
+  protected readonly showAiBubble = computed(() => !!this.currentUser());
 
   protected toggleChat(): void {
     this.comms.openPanel('chat');
