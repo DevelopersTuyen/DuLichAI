@@ -1,0 +1,76 @@
+<div class="shell-wrap">
+  <header class="shell-header">
+    <div class="container-fluid shell-container px-3 px-md-4 px-xxl-5">
+      <div class="glass-card shell-header-card p-3 p-md-4">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+          <div class="d-flex align-items-start gap-3 flex-wrap" *ngIf="currentUser() as user">
+            <span class="shell-avatar">{{ user.avatar }}</span>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="pill-chip">{{ user.tourCode }}</span>
+                <span class="badge-soft" [class.brand]="user.role === 'leader'" [class.success]="user.role === 'tourist'">
+                  {{ user.role }}
+                </span>
+              </div>
+              <div>
+                <div class="soft-label mb-1">{{ user.email }}</div>
+                <h1 class="h5 mb-1 fw-bold">{{ user.name }}</h1>
+                <p class="text-secondary mb-0 small">{{ store.text(user.title) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-2 lang-switch flex-wrap">
+            <button *ngFor="let item of languages" type="button" class="btn btn-sm" [class.btn-dark]="currentLang() === item.code" [class.btn-outline-dark]="currentLang() !== item.code" (click)="setLanguage(item.code)">
+              {{ store.text(item.label) }}
+            </button>
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="logout()">
+              {{ store.text({ vi: 'Đăng xuất', en: 'Logout', ja: 'ログアウト' }) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell-main">
+    <div class="container-fluid shell-container px-3 px-md-4 px-xxl-5">
+      <section class="shell-desktop-nav d-none d-lg-block" *ngIf="currentUser() as user">
+        <div class="panel-card shell-desktop-nav-card p-2 p-xl-3">
+          <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <a
+                class="desktop-link"
+                *ngFor="let item of primaryNav()"
+                [routerLink]="item.route"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: item.route.endsWith('/leader') || item.route.endsWith('/tourist') }"
+              >
+                <span class="desktop-code">{{ item.code }}</span>
+                <span>{{ store.text(item.label) }}</span>
+              </a>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span class="badge-soft brand">{{ user.tourCode }}</span>
+              <span class="badge-soft" [class.brand]="user.role === 'leader'" [class.success]="user.role === 'tourist'">
+                {{ user.role }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <nav class="shell-bottom-nav d-lg-none">
+    <div class="glass-card shell-bottom-card p-2">
+      <a class="bottom-link" *ngFor="let item of primaryNav()" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.route.endsWith('/leader') || item.route.endsWith('/tourist') }">
+        <span class="bottom-code">{{ item.code }}</span>
+        <span>{{ store.text(item.label) }}</span>
+      </a>
+    </div>
+  </nav>
+</div>

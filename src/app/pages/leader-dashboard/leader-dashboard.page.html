@@ -1,0 +1,179 @@
+<section class="app-page leader-dashboard-page">
+  <article class="glass-card p-4 p-lg-5 mb-4 leader-hero">
+    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+      <div class="hero-copy">
+        <div class="soft-label mb-2">{{ text(roleData.badge) }}</div>
+        <h2 class="display-6 fw-bold mb-2">{{ auth.currentUser()?.name }}</h2>
+        <p class="lead mb-2">{{ text(roleData.headline) }}</p>
+        <p class="text-secondary mb-3">{{ text(roleData.description) }}</p>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="badge-soft" *ngFor="let tag of headerTags">{{ text(tag) }}</span>
+        </div>
+      </div>
+
+      <div class="hero-stack">
+        <div class="panel-card p-3 mini-status" *ngFor="let card of controlCards">
+          <div class="soft-label mb-1">{{ text(card.label) }}</div>
+          <div class="h5 fw-bold mb-1" [class]="'tone-' + card.tone">{{ card.value }}</div>
+          <div class="small text-secondary">{{ text(card.note) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-6 col-xl-3" *ngFor="let item of roleData.stats">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text(item.label) }}</div>
+          <div class="metric-value mb-2" [class]="'tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+          <div class="metric-hint">{{ text(item.hint) }}</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+          <div>
+            <div class="soft-label mb-2">Command Center</div>
+            <h3 class="section-title mb-1">{{ text({ vi: 'Tac vu uu tien cho chang hien tai', en: 'Priority actions for this leg', ja: '現在区間の優先タスク' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Cac thao tac nay duoc dung nhieu nhat trong demo dieu hanh truong doan.', en: 'These are the highest-signal actions for the leader demo.', ja: 'リーダーデモで最も見せやすい高頻度操作です。' }) }}</p>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-lg-4" *ngFor="let action of commandActions">
+            <a class="command-card h-100 d-block" [routerLink]="action.route">
+              <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                <span class="feature-code">{{ action.badge }}</span>
+                <span class="badge-soft brand">{{ text({ vi: 'Mo nhanh', en: 'Open now', ja: 'すぐ開く' }) }}</span>
+              </div>
+              <h4 class="h6 fw-bold mb-2">{{ text(action.title) }}</h4>
+              <p class="small text-secondary mb-0">{{ text(action.note) }}</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="subtle-divider mb-4"></div>
+
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-3">
+          <div>
+            <div class="soft-label mb-2">Ops Modules</div>
+            <h3 class="section-title mb-1">{{ text({ vi: '10 module nghiep vu', en: '10 operation modules', ja: '10 の業務モジュール' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Moi module la mot man hinh rieng, phu hop de demo flow nghiep vu that.', en: 'Each module is a dedicated screen designed for a realistic operational flow.', ja: '各モジュールは独立画面で、実際の運営フローとして見せられます。' }) }}</p>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6" *ngFor="let feature of features">
+            <a class="ops-module h-100 d-block" [routerLink]="['/app/leader', feature.slug]">
+              <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                <span class="feature-code">{{ feature.code }}</span>
+                <span class="badge-soft" [class.brand]="feature.metrics[0].tone === 'brand'" [class.success]="feature.metrics[0].tone === 'success'" [class.warning]="feature.metrics[0].tone === 'warning'" [class.danger]="feature.metrics[0].tone === 'danger'">
+                  {{ text(feature.badge) }}
+                </span>
+              </div>
+              <h4 class="h5 fw-bold mb-2">{{ text(feature.title) }}</h4>
+              <p class="text-secondary mb-3">{{ text(feature.summary) }}</p>
+              <div class="d-flex align-items-center justify-content-between gap-2 small">
+                <span>{{ text(feature.metrics[0].label) }}</span>
+                <strong>{{ feature.metrics[0].value }}</strong>
+              </div>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">Watch Board</div>
+        <h3 class="section-title mb-3">{{ text({ vi: 'Nhung viec can xu ly ngay', en: 'Needs attention now', ja: '今すぐ確認すべき項目' }) }}</h3>
+        <div class="d-grid gap-3 mb-4">
+          <div class="alert-card" *ngFor="let item of roleData.spotlight">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-0">{{ text(item.meta) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-3 mb-4">
+          <div class="watch-card" *ngFor="let item of watchBoard">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-0">{{ text(item.meta) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-app-primary" routerLink="/app/leader/emergency-broadcast">{{ text({ vi: 'Gui emergency broadcast', en: 'Send emergency broadcast', ja: '緊急一斉通知を送る' }) }}</button>
+          <button class="btn btn-outline-dark" routerLink="/app/leader/ops-hotlink">{{ text({ vi: 'Mo ops hotline', en: 'Open ops hotline', ja: 'Ops Hotlink を開く' }) }}</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Live Queue</div>
+        <div class="d-grid gap-3">
+          <div class="live-card" *ngFor="let item of liveQueue">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-1">{{ text(item.meta) }}</p>
+                <p class="small mb-0">{{ text(item.note) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Leader Briefing</div>
+        <div class="d-grid gap-3 mb-4">
+          <div class="brief-step" *ngFor="let step of briefingSteps; let idx = index">
+            <span class="step-badge">{{ idx + 1 }}</span>
+            <div>{{ text(step) }}</div>
+          </div>
+        </div>
+
+        <div class="subtle-divider mb-4"></div>
+
+        <div class="soft-label mb-2">Team Timeline</div>
+        <div class="timeline-line d-grid gap-3">
+          <div class="d-flex align-items-start gap-3" *ngFor="let item of teamTimeline">
+            <span class="timeline-dot"></span>
+            <div class="panel-card p-3 border-0 shadow-none bg-light-subtle flex-grow-1">
+              <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
+                <h4 class="h6 fw-bold mb-0">{{ text(item.title) }}</h4>
+                <span class="badge-soft">{{ item.time }}</span>
+              </div>
+              <p class="small text-secondary mb-1">{{ item.badge }}</p>
+              <p class="small mb-0">{{ text(item.note) }}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6" *ngFor="let chart of roleData.charts">
+      <app-chart-card [config]="chart"></app-chart-card>
+    </div>
+  </div>
+</section>

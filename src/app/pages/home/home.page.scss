@@ -1,0 +1,15 @@
+.home-hero {
+  overflow: hidden;
+  position: relative;
+}
+
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -2rem -2rem auto;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 122, 26, 0.18), transparent 62%);
+  pointer-events: none;
+}

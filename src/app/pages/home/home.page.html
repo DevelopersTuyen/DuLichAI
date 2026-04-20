@@ -1,0 +1,122 @@
+<section class="app-page">
+  <div class="row g-3 g-xl-4">
+    <div class="col-12 col-xl-7">
+      <article class="glass-card p-4 p-lg-5 home-hero h-100">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="pill-chip">B2B Tour Demo</span>
+          <span class="pill-chip">VI / EN / JA</span>
+        </div>
+
+        <div class="soft-label mb-2">Smart Tour Operations</div>
+        <h2 class="display-6 fw-bold mb-3">{{ store.text(home.tagline) }}</h2>
+        <p class="lead text-secondary mb-4">{{ store.text(home.summary) }}</p>
+
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-4" *ngFor="let item of home.heroStats">
+            <div class="metric-card h-100">
+              <div class="soft-label mb-2">{{ store.text(item.label) }}</div>
+              <div class="metric-value" [class]="'metric-value mb-2 tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+              <div class="metric-hint">{{ store.text(item.hint) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column flex-sm-row gap-2">
+          <a class="btn btn-app-primary btn-lg" routerLink="/leader">{{ store.text(leader.title) }}</a>
+          <a class="btn btn-outline-dark btn-lg" routerLink="/tourist">{{ store.text(tourist.title) }}</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-5">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Why this demo works</div>
+        <h3 class="section-title mb-3">Demo Story</h3>
+        <div class="d-grid gap-3">
+          <div class="panel-card p-3 border-0 shadow-none bg-light-subtle" *ngFor="let point of home.quickPoints">
+            <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+              <h4 class="h6 mb-0 fw-bold">{{ store.text(point.title) }}</h4>
+              <span class="badge-soft" [class.brand]="point.tone === 'brand'" [class.success]="point.tone === 'success'" [class.warning]="point.tone === 'warning'" [class.danger]="point.tone === 'danger'">
+                {{ point.badge || 'UI' }}
+              </span>
+            </div>
+            <p class="text-secondary mb-0 small">{{ store.text(point.note) }}</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">A. Tour Leader</div>
+        <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+          <div>
+            <h3 class="section-title mb-2">{{ store.text(leader.headline) }}</h3>
+            <p class="text-secondary mb-0">{{ store.text(leader.description) }}</p>
+          </div>
+          <span class="badge-soft brand">10</span>
+        </div>
+        <div class="row g-3">
+          <div class="col-6" *ngFor="let item of leader.stats">
+            <div class="metric-card h-100">
+              <div class="soft-label mb-2">{{ store.text(item.label) }}</div>
+              <div class="metric-value mb-2" [class]="'metric-value mb-2 tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+              <div class="metric-hint">{{ store.text(item.hint) }}</div>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-dark w-100 mt-4" routerLink="/leader">{{ store.text(leader.title) }}</a>
+      </article>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">B. Tourist</div>
+        <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+          <div>
+            <h3 class="section-title mb-2">{{ store.text(tourist.headline) }}</h3>
+            <p class="text-secondary mb-0">{{ store.text(tourist.description) }}</p>
+          </div>
+          <span class="badge-soft success">5</span>
+        </div>
+        <div class="row g-3">
+          <div class="col-6" *ngFor="let item of tourist.stats">
+            <div class="metric-card h-100">
+              <div class="soft-label mb-2">{{ store.text(item.label) }}</div>
+              <div class="metric-value mb-2" [class]="'metric-value mb-2 tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+              <div class="metric-hint">{{ store.text(item.hint) }}</div>
+            </div>
+          </div>
+        </div>
+        <a class="btn btn-outline-dark w-100 mt-4" routerLink="/tourist">{{ store.text(tourist.title) }}</a>
+      </article>
+    </div>
+
+    <div class="col-12">
+      <article class="panel-card p-4 p-lg-5">
+        <div class="soft-label mb-2">Demo Journey</div>
+        <div *ngFor="let journey of home.journeys">
+          <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-3">
+            <div>
+              <h3 class="section-title mb-1">{{ store.text(journey.title) }}</h3>
+              <p class="text-secondary mb-0">{{ store.text(journey.note) }}</p>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-12 col-md-6" *ngFor="let item of journey.details">
+              <div class="glass-card p-4 h-100">
+                <div class="d-flex align-items-start gap-3">
+                  <span class="feature-code">{{ item.badge }}</span>
+                  <div>
+                    <h4 class="h6 fw-bold mb-1">{{ store.text(item.title) }}</h4>
+                    <p class="text-secondary mb-0">{{ store.text(item.meta) }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,7 @@
+{
+  "name": "tmp-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

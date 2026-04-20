@@ -1,0 +1,164 @@
+<section class="app-page tourist-dashboard-page">
+  <article class="glass-card p-4 p-lg-5 mb-4 tourist-hero">
+    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+      <div class="hero-copy">
+        <div class="soft-label mb-2">{{ text(roleData.badge) }}</div>
+        <h2 class="display-6 fw-bold mb-2">{{ auth.currentUser()?.name }}</h2>
+        <p class="lead mb-2">{{ text(roleData.headline) }}</p>
+        <p class="text-secondary mb-3">{{ text(roleData.description) }}</p>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <span class="badge-soft" *ngFor="let tag of heroTags">{{ text(tag) }}</span>
+        </div>
+      </div>
+
+      <div class="hero-stack">
+        <div class="panel-card p-3 info-card" *ngFor="let card of quickCards">
+          <div class="soft-label mb-1">{{ text(card.label) }}</div>
+          <div class="h5 fw-bold mb-1" [class]="'tone-' + card.tone">{{ card.value }}</div>
+          <div class="small text-secondary">{{ text(card.note) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-6 col-xl-3" *ngFor="let item of roleData.stats">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text(item.label) }}</div>
+          <div class="metric-value mb-2" [class]="'tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+          <div class="metric-hint">{{ text(item.hint) }}</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+          <div>
+            <div class="soft-label mb-2">Traveler Starter</div>
+            <h3 class="section-title mb-1">{{ text({ vi: '3 man hinh de mo dau demo', en: '3 screens to open the demo', ja: 'デモ導入に見せる 3 画面' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Cac thao tac nay de hieu, hop voi khach Nhat va rat dung ngu canh “safe travel in Vietnam”.', en: 'These actions are clear, client-friendly, and fit the “safe travel in Vietnam” story.', ja: '分かりやすく、日本向け提案で「ベトナムを安全に旅する」文脈に合う導入です。' }) }}</p>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-lg-4" *ngFor="let action of travelerActions">
+            <a class="traveler-action h-100 d-block" [routerLink]="action.route">
+              <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                <span class="feature-code">{{ action.badge }}</span>
+                <span class="badge-soft brand">{{ text({ vi: 'Mo ngay', en: 'Open now', ja: 'すぐ開く' }) }}</span>
+              </div>
+              <h4 class="h6 fw-bold mb-2">{{ text(action.title) }}</h4>
+              <p class="small text-secondary mb-0">{{ text(action.note) }}</p>
+            </a>
+          </div>
+        </div>
+
+        <div class="subtle-divider mb-4"></div>
+
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+          <div>
+            <div class="soft-label mb-2">Travel Toolkit</div>
+            <h3 class="section-title mb-1">{{ text({ vi: '5 cong cu cho du khach', en: '5 traveler tools', ja: '旅行者向け 5 ツール' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Moi tinh nang la mot trang rieng tren web va app mobile.', en: 'Each feature opens as its own page on both web and mobile.', ja: '各機能は Web とモバイルの両方で独立ページとして開きます。' }) }}</p>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-md-6" *ngFor="let feature of features">
+            <a class="travel-tool d-block h-100" [routerLink]="['/app/tourist', feature.slug]">
+              <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                <span class="feature-code">{{ feature.code }}</span>
+                <span class="badge-soft" [class.brand]="feature.metrics[0].tone === 'brand'" [class.success]="feature.metrics[0].tone === 'success'" [class.warning]="feature.metrics[0].tone === 'warning'" [class.danger]="feature.metrics[0].tone === 'danger'">
+                  {{ text(feature.badge) }}
+                </span>
+              </div>
+              <h4 class="h5 fw-bold mb-2">{{ text(feature.title) }}</h4>
+              <p class="text-secondary mb-3">{{ text(feature.summary) }}</p>
+              <div class="small d-flex align-items-center justify-content-between gap-2">
+                <span>{{ text(feature.metrics[0].label) }}</span>
+                <strong>{{ feature.metrics[0].value }}</strong>
+              </div>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">Quick Help</div>
+        <div class="d-grid gap-3 mb-4">
+          <div class="help-card" *ngFor="let item of roleData.spotlight">
+            <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+            <p class="small text-secondary mb-0">{{ text(item.meta) }}</p>
+          </div>
+        </div>
+
+        <div class="soft-label mb-2">Pocket Tips</div>
+        <div class="d-grid gap-3 mb-4">
+          <div class="tip-card" *ngFor="let item of pocketTips">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-1">{{ text(item.meta) }}</p>
+                <p class="small mb-0">{{ text(item.note) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-app-primary" routerLink="/app/tourist/scam-alert">{{ text({ vi: 'Mo canh bao an toan', en: 'Open safety alerts', ja: '安全警告を開く' }) }}</button>
+          <button class="btn btn-outline-dark" routerLink="/app/tourist/ai-local-buddy">{{ text({ vi: 'Hoi AI buddy', en: 'Ask AI buddy', ja: 'AI buddy に聞く' }) }}</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Suggested Demo Flow</div>
+        <div class="d-grid gap-3">
+          <div class="journey-card" *ngFor="let item of suggestedJourney">
+            <div class="d-flex align-items-start gap-3">
+              <span class="step-badge">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-0">{{ text(item.meta) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">Traveler Moments</div>
+        <div class="timeline-line d-grid gap-3">
+          <div class="d-flex align-items-start gap-3" *ngFor="let item of helpMoments">
+            <span class="timeline-dot"></span>
+            <div class="panel-card p-3 border-0 shadow-none bg-light-subtle flex-grow-1">
+              <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
+                <h4 class="h6 fw-bold mb-0">{{ text(item.title) }}</h4>
+                <span class="badge-soft">{{ item.time }}</span>
+              </div>
+              <p class="small text-secondary mb-1">{{ item.badge }}</p>
+              <p class="small mb-0">{{ text(item.note) }}</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6" *ngFor="let chart of roleData.charts">
+      <app-chart-card [config]="chart"></app-chart-card>
+    </div>
+  </div>
+</section>

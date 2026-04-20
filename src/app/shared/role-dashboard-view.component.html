@@ -1,0 +1,83 @@
+<section class="app-page">
+  <article class="glass-card p-4 p-lg-5 mb-4">
+    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+      <div>
+        <div class="soft-label mb-2">{{ store.text(roleData().badge) }}</div>
+        <h2 class="display-6 fw-bold mb-2">{{ store.text(roleData().title) }}</h2>
+        <p class="lead mb-2">{{ store.text(roleData().headline) }}</p>
+        <p class="text-secondary mb-0">{{ store.text(roleData().description) }}</p>
+      </div>
+      <a class="btn btn-outline-dark" routerLink="/">{{ store.text(labels.backToDemo) }}</a>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-6 col-xl-3" *ngFor="let item of roleData().stats">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ store.text(item.label) }}</div>
+          <div class="metric-value mb-2" [class]="'metric-value mb-2 tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+          <div class="metric-hint">{{ store.text(item.hint) }}</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+      <div class="row g-4">
+        <div class="col-12 col-lg-6" *ngFor="let chart of roleData().charts">
+          <app-chart-card [config]="chart"></app-chart-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">Live Ops</div>
+        <h3 class="section-title mb-3">{{ store.text(labels.liveOps) }}</h3>
+        <div class="d-grid gap-3">
+          <div class="panel-card p-3 border-0 shadow-none bg-light-subtle" *ngFor="let item of roleData().spotlight">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ store.text(item.title) }}</h4>
+                <p class="text-secondary mb-0 small">{{ store.text(item.meta) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <article class="panel-card p-4 p-lg-5">
+    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+      <div>
+        <div class="soft-label mb-2">Feature Library</div>
+        <h3 class="section-title mb-1">{{ store.text(labels.allScreens) }}</h3>
+        <p class="text-secondary mb-0">{{ store.text(labels.demoData) }}</p>
+      </div>
+      <span class="badge-soft brand">{{ features().length }}</span>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-12 col-md-6 col-xl-4" *ngFor="let feature of features()">
+        <a class="feature-card panel-card d-block p-4 h-100" [routerLink]="featureRoute(feature.slug)">
+          <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+            <span class="feature-code">{{ feature.code }}</span>
+            <span class="badge-soft" [class.success]="feature.metrics[0].tone === 'success'" [class.warning]="feature.metrics[0].tone === 'warning'" [class.danger]="feature.metrics[0].tone === 'danger'" [class.brand]="!feature.metrics[0].tone || feature.metrics[0].tone === 'brand'">
+              {{ store.text(feature.badge) }}
+            </span>
+          </div>
+          <h4 class="h5 fw-bold mb-2">{{ store.text(feature.title) }}</h4>
+          <p class="text-secondary mb-3">{{ store.text(feature.summary) }}</p>
+          <div class="d-grid gap-2">
+            <div class="d-flex align-items-center justify-content-between" *ngFor="let metric of feature.metrics | slice:0:2">
+              <span class="small text-secondary">{{ store.text(metric.label) }}</span>
+              <span class="fw-bold">{{ metric.value }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </article>
+</section>
