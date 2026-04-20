@@ -126,7 +126,7 @@ const homeData: HomeData = {
     },
     {
       label: lt('Màn hình demo', 'Demo screens', 'デモ画面'),
-      value: '15',
+      value: '16',
       hint: lt('Đủ cho 2 nhóm người dùng', 'Covers both user groups', '2つのユーザーグループを網羅'),
       tone: 'success',
     },
@@ -702,9 +702,77 @@ const leaderFeatures: FeatureDefinition[] = [
           lt('Gửi cho ops và tự động sinh bản tóm tắt tiếng Nhật nếu cần.', 'Send to ops and auto-generate Japanese summary when needed.', '運営へ送信し、必要に応じて日本語要約を自動作成。'),
         ],
       },
-    ],
-  },
-];
+      ],
+    },
+    {
+      slug: 'analytics-report',
+      role: 'leader',
+      code: 'RPT',
+      title: lt('Analytics Report', 'Analytics Report', '統計レポート'),
+      summary: lt('Báo cáo thống kê tour theo check-in, an toàn, quỹ đoàn, sự cố và hiệu suất điều hành.', 'Tour analytics across check-in, safety, funds, incidents, and operating performance.', '点呼、安全、会計、インシデント、運営効率を横断して可視化する統計レポートです。'),
+      status: lt('7 snapshot bao cao san sang xuat PDF hoac chia se cho ops', '7 reporting snapshots are ready for PDF export or ops sharing', '7つのレポートスナップショットをPDF出力または本部共有できます'),
+      badge: lt('Report', 'Report', 'レポート'),
+      metrics: [
+        { label: lt('Ty le dung gio', 'On-time rate', '定時率'), value: '94%', hint: lt('Tinh cho 4 chang trong ngay', 'Across 4 itinerary legs today', '本日4区間の集計'), tone: 'success' },
+        { label: lt('Do chinh xac quy doan', 'Fund accuracy', '会計整合率'), value: '99.2%', hint: lt('Lech 1 muc cho xac minh', '1 item remains under verification', '確認中1件のみ'), tone: 'brand' },
+        { label: lt('Xu huong su co', 'Incident trend', 'インシデント推移'), value: '-35%', hint: lt('So voi 3 tour gan nhat', 'Compared with the last 3 tours', '直近3ツアー比'), tone: 'warning' },
+      ],
+      chart: {
+        title: lt('Tong hop KPI tour', 'Tour KPI overview', 'ツアーKPI概要'),
+        note: lt('Bieu do mo phong de demo voi khach va doi dieu hanh.', 'Simulated chart set for client demos and internal ops reviews.', '顧客提案と運営レビュー向けのデモ用集計です。'),
+        type: 'line',
+        labels: [lt('Day 1', 'Day 1', 'Day 1'), lt('Day 2', 'Day 2', 'Day 2'), lt('Day 3', 'Day 3', 'Day 3'), lt('Day 4', 'Day 4', 'Day 4')],
+        datasets: [
+          {
+            label: lt('Dung gio', 'On-time', '定時'),
+            data: [91, 95, 93, 94],
+            backgroundColor: 'rgba(11,95,255,0.12)',
+            borderColor: '#0b5fff',
+            fill: true,
+            tension: 0.35,
+          },
+          {
+            label: lt('Do an toan', 'Safety', '安全'),
+            data: [96, 97, 98, 98],
+            backgroundColor: 'rgba(12,138,100,0.12)',
+            borderColor: '#0c8a64',
+            fill: true,
+            tension: 0.35,
+          },
+        ],
+      },
+      sections: [
+        {
+          kind: 'table',
+          title: lt('Snapshot bao cao', 'Reporting snapshots', 'レポートスナップショット'),
+          columns: [lt('Hang muc', 'Area', '項目'), lt('Gia tri', 'Value', '値'), lt('So sanh', 'Benchmark', '比較'), lt('Trang thai', 'Status', '状態')],
+          rows: [
+            { cells: [lt('Check-in dung han', 'On-time check-in', '定時点呼'), '94%', lt('+3% so voi tour truoc', '+3% vs previous tour', '前回比 +3%'), lt('Tot', 'Healthy', '良好')], tone: 'success' },
+            { cells: [lt('Quy doan / chi tieu', 'Fund control', '団体会計'), '99.2%', lt('1 muc cho xac minh', '1 item pending verification', '確認待ち1件'), lt('Can doi chieu', 'Review', '確認中')], tone: 'warning' },
+            { cells: [lt('Su co mo', 'Open incidents', '対応中案件'), '1', lt('-35% so voi trung binh 3 tour', '-35% vs 3-tour average', '直近3ツアー平均比 -35%'), lt('Kiem soat', 'Controlled', 'コントロール中')], tone: 'brand' },
+          ],
+        },
+        {
+          kind: 'list',
+          title: lt('Bo bao cao san sang', 'Ready report packs', '出力可能なレポート'),
+          items: [
+            { title: lt('Bao cao dieu hanh cuoi ngay', 'End-of-day operations pack', '日次運営レポート'), meta: lt('Tong hop dung gio, su co, fund va partner notes', 'Combines timing, incidents, funds, and partner notes', '定時率、案件、会計、パートナーメモを統合'), badge: 'EOD', tone: 'brand' },
+            { title: lt('Bao cao an toan cho khach Nhat', 'Safety recap for Japanese clients', '日本顧客向け安全サマリー'), meta: lt('Tap trung vao GPS, scam alert va xu ly khan cap', 'Focuses on GPS, safety alerts, and emergency handling', 'GPS、安全警告、緊急対応に集中'), badge: 'SAFE', tone: 'success' },
+            { title: lt('Bao cao tai chinh / doi soat', 'Finance and reconciliation pack', '会計照合レポート'), meta: lt('Xuat PDF hoac chia se cho back office', 'Can be exported as PDF or shared with back office', 'PDF出力またはバックオフィス共有に対応'), badge: 'FIN', tone: 'warning' },
+          ],
+        },
+        {
+          kind: 'steps',
+          title: lt('Luong xuat bao cao', 'Reporting flow', 'レポート出力フロー'),
+          steps: [
+            lt('Chon giai doan can thong ke: trong ngay, theo chang, hoac toan tour.', 'Choose the reporting scope: intraday, per leg, or full tour.', '集計単位を当日、区間別、全体ツアーから選択。'),
+            lt('Kiem tra KPI da dong bo tu check-in, fund, incident va itinerary.', 'Confirm KPI sync from check-in, funds, incidents, and itinerary.', '点呼、会計、案件、旅程からKPI同期を確認。'),
+            lt('Xuat PDF, gui cho ops hoac chia se ban song ngu cho khach hang.', 'Export to PDF, send to ops, or share a bilingual summary with the client.', 'PDF出力、本部共有、または顧客向け二言語サマリー共有。'),
+          ],
+        },
+      ],
+    },
+  ];
 
 const touristFeatures: FeatureDefinition[] = [
   {
@@ -989,6 +1057,7 @@ const roleDefinitions: Record<UserRole, RoleDefinition> = {
       leaderFeatures[1].chart!,
       leaderFeatures[5].chart!,
       leaderFeatures[8].chart!,
+      leaderFeatures[10].chart!,
     ],
   },
   tourist: {

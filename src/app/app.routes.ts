@@ -84,6 +84,12 @@ export const routes: Routes = [
           import('./pages/incident-reporter/incident-reporter.page').then((m) => m.IncidentReporterPage),
       },
       {
+        path: 'leader/analytics-report',
+        canActivate: [roleGuard('leader')],
+        loadComponent: () =>
+          import('./pages/analytics-report/analytics-report.page').then((m) => m.AnalyticsReportPage),
+      },
+      {
         path: 'tourist',
         canActivate: [roleGuard('tourist')],
         loadComponent: () =>

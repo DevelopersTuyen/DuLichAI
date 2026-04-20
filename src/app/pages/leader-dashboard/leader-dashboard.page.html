@@ -43,7 +43,7 @@
         </div>
 
         <div class="row g-3 mb-4">
-          <div class="col-12 col-lg-4" *ngFor="let action of commandActions">
+          <div class="col-12 col-lg-6" *ngFor="let action of commandActions">
             <a class="command-card h-100 d-block" [routerLink]="action.route">
               <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
                 <span class="feature-code">{{ action.badge }}</span>
@@ -60,7 +60,7 @@
         <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-3">
           <div>
             <div class="soft-label mb-2">Ops Modules</div>
-            <h3 class="section-title mb-1">{{ text({ vi: '10 module nghiep vu', en: '10 operation modules', ja: '10 の業務モジュール' }) }}</h3>
+            <h3 class="section-title mb-1">{{ features.length }} {{ text({ vi: 'module nghiep vu', en: 'operation modules', ja: 'operation modules' }) }}</h3>
             <p class="text-secondary mb-0">{{ text({ vi: 'Moi module la mot man hinh rieng, phu hop de demo flow nghiep vu that.', en: 'Each module is a dedicated screen designed for a realistic operational flow.', ja: '各モジュールは独立画面で、実際の運営フローとして見せられます。' }) }}</p>
           </div>
         </div>

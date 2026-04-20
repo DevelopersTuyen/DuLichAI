@@ -1,0 +1,212 @@
+<section class="app-page analytics-report-page">
+  <article class="glass-card p-4 p-lg-5 mb-4 analytics-hero">
+    <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+      <div class="hero-copy">
+        <div class="d-flex align-items-center gap-2 flex-wrap mb-2">
+          <span class="pill-chip">{{ text(feature.badge) }}</span>
+          <span class="badge-soft brand">{{ feature.code }}</span>
+        </div>
+        <h2 class="display-6 fw-bold mb-2">{{ text(feature.title) }}</h2>
+        <p class="lead mb-2">{{ text(feature.summary) }}</p>
+        <p class="text-secondary mb-0">{{ text(feature.status) }}</p>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 flex-wrap">
+        <a class="btn btn-outline-dark" routerLink="/app/leader">{{ text(backLabel) }}</a>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-6 col-xl-3" *ngFor="let item of feature.metrics">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text(item.label) }}</div>
+          <div class="metric-value mb-2" [class]="'tone-' + (item.tone || 'brand')">{{ item.value }}</div>
+          <div class="metric-hint">{{ text(item.hint) }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text({ vi: 'Tong thao tac demo', en: 'Demo actions', ja: 'Demo sosa' }) }}</div>
+          <div class="metric-value mb-2 tone-brand">{{ totalRuns() }}</div>
+          <div class="metric-hint">{{ text({ vi: 'Cong tu tat ca module leader', en: 'Across all leader modules', ja: 'Leader module zentai no gokei' }) }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text({ vi: 'Module da kich hoat', en: 'Active modules', ja: 'Kassei module' }) }}</div>
+          <div class="metric-value mb-2 tone-success">{{ activeModules() }}/{{ moduleRows().length }}</div>
+          <div class="metric-hint">{{ text({ vi: 'Tinh theo cac man hinh da co thao tac', en: 'Counts modules with at least one action', ja: 'Ikkai demo sosa ga atta module no kazu' }) }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-xl-3">
+        <div class="metric-card h-100">
+          <div class="soft-label mb-2">{{ text({ vi: 'Module noi bat', en: 'Top module', ja: 'Top module' }) }}</div>
+          <div class="metric-value mb-2 tone-warning">{{ topModuleCode() }}</div>
+          <div class="metric-hint">{{ text(topModuleHint()) }}</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-8">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-4">
+          <div>
+            <div class="soft-label mb-2">Report Console</div>
+            <h3 class="section-title mb-1">{{ text({ vi: 'Tac vu xuat bao cao va chia se', en: 'Export and sharing actions', ja: 'Report sakusei to share' }) }}</h3>
+            <p class="text-secondary mb-0">{{ text({ vi: 'Cac nut nay se tao log demo thuc te de team co the mo report roi quay lai dashboard xem bien dong.', en: 'These buttons create runtime logs so the team can open reports, return to the dashboard, and see state changes.', ja: 'Kono button de runtime log ga hassei shi, report to dashboard no idoki demo henka ga mie masu.' }) }}</p>
+          </div>
+          <span class="badge-soft brand">{{ totalRuns() }} {{ text({ vi: 'luot', en: 'runs', ja: 'kai' }) }}</span>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-12 col-lg-4" *ngFor="let action of exportActions">
+            <button type="button" class="action-card text-start w-100 h-100" [class.is-active]="actionCount(action) > 0" (click)="runExport(action)">
+              <div class="d-flex align-items-start gap-3">
+                <span class="feature-code">{{ action.badge }}</span>
+                <div>
+                  <div class="fw-bold mb-1">{{ text(action.title) }}</div>
+                  <div class="small text-secondary mb-1">{{ text(action.meta) }}</div>
+                  <div class="small">{{ text(action.note) }}</div>
+                  <div class="d-flex align-items-center gap-2 flex-wrap mt-3">
+                    <span class="badge-soft success" *ngIf="actionCount(action) > 0">{{ actionCount(action) }}x</span>
+                    <span class="small text-secondary">{{ actionCount(action) > 0 ? text({ vi: 'Da tao log', en: 'Logged in runtime', ja: 'Runtime ni kiroku' }) : text({ vi: 'San sang chay', en: 'Ready to run', ja: 'Jikko junbi' }) }}</span>
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="subtle-divider my-4"></div>
+
+        <div class="table-responsive">
+          <table class="table align-middle analytics-table">
+            <thead>
+              <tr>
+                <th>{{ text({ vi: 'Module', en: 'Module', ja: 'Module' }) }}</th>
+                <th>{{ text({ vi: 'Luot chay', en: 'Runs', ja: 'Run' }) }}</th>
+                <th>{{ text({ vi: 'Trang thai', en: 'Status', ja: 'Status' }) }}</th>
+                <th>{{ text({ vi: 'Thao tac cuoi', en: 'Last action', ja: 'Saigo no action' }) }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of moduleRows()">
+                <td>
+                  <div class="d-flex align-items-start gap-3">
+                    <span class="feature-code feature-code-sm">{{ row.feature.code }}</span>
+                    <div>
+                      <div class="fw-bold">{{ text(row.feature.title) }}</div>
+                      <div class="small text-secondary">{{ text(row.feature.summary) }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <strong>{{ row.totalRuns }}</strong>
+                </td>
+                <td>
+                  <span class="badge-soft" [class.brand]="row.statusTone === 'brand'" [class.success]="row.statusTone === 'success'" [class.warning]="row.statusTone === 'warning'">
+                    {{ text(row.statusLabel) }}
+                  </span>
+                </td>
+                <td>
+                  <div *ngIf="row.lastAction; else noAction">
+                    <div class="fw-semibold">{{ text(row.lastAction.title) }}</div>
+                    <div class="small text-secondary">{{ text(row.lastAction.meta) }}</div>
+                  </div>
+                  <ng-template #noAction>
+                    <span class="small text-secondary">{{ text({ vi: 'Chua co thao tac', en: 'No interaction yet', ja: 'Mada sosa nashi' }) }}</span>
+                  </ng-template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <article class="panel-card p-4 h-100">
+        <div class="soft-label mb-2">Live Timeline</div>
+        <h3 class="section-title mb-3">{{ text({ vi: 'Dong su kien runtime', en: 'Runtime activity stream', ja: 'Runtime activity stream' }) }}</h3>
+
+        <div class="timeline-line d-grid gap-3 mb-4">
+          <div class="d-flex align-items-start gap-3" *ngFor="let item of recentActivity()">
+            <span class="timeline-dot"></span>
+            <div class="panel-card p-3 border-0 shadow-none bg-light-subtle flex-grow-1">
+              <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
+                <h4 class="h6 fw-bold mb-0">{{ text(item.item.title) }}</h4>
+                <span class="badge-soft brand">{{ item.code }}</span>
+              </div>
+              <p class="small text-secondary mb-1">{{ text(item.title) }}</p>
+              <p class="small mb-0">{{ text(item.item.meta) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="soft-label mb-2">Ready Packs</div>
+        <div class="d-grid gap-3 mb-4">
+          <div class="report-pack" *ngFor="let item of reportPacks">
+            <div class="d-flex align-items-start gap-3">
+              <span class="feature-code feature-code-sm">{{ item.badge }}</span>
+              <div>
+                <h4 class="h6 fw-bold mb-1">{{ text(item.title) }}</h4>
+                <p class="small text-secondary mb-1">{{ text(item.meta) }}</p>
+                <p class="small mb-0" *ngIf="item.note">{{ text(item.note) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-app-primary" type="button" (click)="runExport(exportActions[0])">{{ text({ vi: 'Xuat report PDF', en: 'Export PDF report', ja: 'PDF reporto o shutsuryoku' }) }}</button>
+          <button class="btn btn-outline-dark" type="button" (click)="runExport(exportActions[1])">{{ text({ vi: 'Gui snapshot cho ops', en: 'Send snapshot to ops', ja: 'Snapshot o ops ni soshin' }) }}</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-xl-6">
+      <app-chart-card [config]="usageChart()"></app-chart-card>
+    </div>
+    <div class="col-12 col-xl-6">
+      <app-chart-card [config]="readinessChart()"></app-chart-card>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">{{ text(snapshotSection.title) }}</div>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th *ngFor="let col of snapshotSection.columns">{{ text(col) }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of snapshotSection.rows">
+                <td *ngFor="let cell of row.cells">{{ text(cell) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-xl-6">
+      <article class="panel-card p-4 p-lg-5 h-100">
+        <div class="soft-label mb-2">{{ text(feature.sections[2].title) }}</div>
+        <div class="d-grid gap-3">
+          <div class="playbook-step" *ngFor="let step of reportingSteps; let idx = index">
+            <span class="step-badge">{{ idx + 1 }}</span>
+            <div>{{ text(step) }}</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

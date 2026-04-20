@@ -20,7 +20,7 @@ export class LeaderDashboardPage {
   protected readonly features = this.store.roleFeatures('leader');
   protected readonly headerTags = [
     lt('Live ops', 'Live ops', 'ライブ運営'),
-    lt('32 khach / 10 module', '32 guests / 10 modules', '32名 / 10機能'),
+    lt('32 khach / 11 module', '32 guests / 11 modules', '32名 / 11機能'),
     lt('Web + app demo', 'Web + app demo', 'Web + アプリデモ'),
   ];
   protected readonly commandActions = [
@@ -41,6 +41,12 @@ export class LeaderDashboardPage {
       badge: 'SOS',
       title: lt('Gui thong bao khan', 'Send emergency broadcast', '緊急一斉通知を送る'),
       note: lt('Day la nut xu ly nhanh khi doan bi tach nhom hoac can doi diem hen.', 'Use when the group splits or the meet-up point changes.', 'グループ分離や集合場所変更時の即応操作。'),
+    },
+    {
+      route: '/app/leader/analytics-report',
+      badge: 'RPT',
+      title: lt('Mo analytics report', 'Open analytics report', 'Analytics report o hiraku'),
+      note: lt('Tong hop KPI, log demo va snapshot de trinh bay voi khach.', 'Review KPI, runtime logs, and export-ready snapshots.', 'KPI, runtime log, export yo snapshot o kakunin dekimasu.'),
     },
   ];
   protected readonly controlCards = [

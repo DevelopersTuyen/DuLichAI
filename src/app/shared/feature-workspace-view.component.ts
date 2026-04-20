@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FeatureDefinition, TextLike, lt } from '../demo/demo-data';
+import { DemoListItem, FeatureDefinition, TextLike, lt } from '../demo/demo-data';
+import { DemoRuntimeService } from '../demo/demo-runtime.service';
 import { DemoStoreService } from '../demo/demo-store.service';
 import { workspaceForFeature } from '../demo/feature-workspaces';
 import { ChartCardComponent } from './chart-card.component';
@@ -56,17 +57,49 @@ import { ChartCardComponent } from './chart-card.component';
             <div class="soft-label mb-2">{{ text(workspace.quickActionsTitle) }}</div>
             <div class="row g-3">
               <div class="col-12 col-lg-4" *ngFor="let action of workspace.quickActions">
-                <button type="button" class="action-card text-start w-100">
+                <button type="button" class="action-card text-start w-100" [class.is-active]="actionCount(action) > 0" (click)="executeAction(action)">
                   <div class="d-flex align-items-start gap-3">
                     <span class="feature-code">{{ action.badge || 'GO' }}</span>
                     <div>
                       <div class="fw-bold mb-1">{{ text(action.title) }}</div>
                       <div class="small text-secondary mb-1" *ngIf="action.meta">{{ text(action.meta) }}</div>
                       <div class="small" *ngIf="action.note">{{ text(action.note) }}</div>
+                      <div class="d-flex align-items-center gap-2 flex-wrap mt-3">
+                        <span class="badge-soft success" *ngIf="actionCount(action) > 0">{{ actionCount(action) }}x</span>
+                        <span class="small text-secondary">{{ actionCount(action) > 0 ? text({ vi: 'Da thuc hien trong demo', en: 'Executed in demo', ja: 'デモで実行済み' }) : text({ vi: 'San sang thao tac', en: 'Ready to run', ja: '実行待ち' }) }}</span>
+                      </div>
                     </div>
                   </div>
                 </button>
               </div>
+            </div>
+
+            <div class="panel-card p-3 p-lg-4 border-0 shadow-none bg-light-subtle mt-4" *ngIf="runtimeState() as runtime">
+              <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap mb-3">
+                <div>
+                  <div class="soft-label mb-1">{{ text({ vi: 'Trang thai van hanh', en: 'Simulation state', ja: 'シミュレーション状態' }) }}</div>
+                  <div class="small text-secondary">{{ text({ vi: 'Cac nut action se cap nhat log va trang thai ngay tai man hinh nay.', en: 'Action buttons now update state and activity on this screen.', ja: '各アクションはこの画面上で状態とアクティビティを更新します。' }) }}</div>
+                </div>
+                <span class="badge-soft brand">{{ runtime.totalRuns }} {{ text({ vi: 'lan chay', en: 'runs', ja: '回実行' }) }}</span>
+              </div>
+
+              <ng-container *ngIf="runtime.lastAction as last; else idleRuntime">
+                <div class="assistant-tip runtime-tip">
+                  <span class="assistant-dot"></span>
+                  <span>
+                    <strong>{{ text(last.title) }}</strong>
+                    <span class="d-block small text-secondary mt-1">{{ text(last.meta) }}</span>
+                    <span class="d-block small mt-1" *ngIf="last.note">{{ text(last.note) }}</span>
+                  </span>
+                </div>
+              </ng-container>
+
+              <ng-template #idleRuntime>
+                <div class="assistant-tip runtime-tip">
+                  <span class="assistant-dot"></span>
+                  <span>{{ text({ vi: 'Chua co thao tac nao duoc chay. Bam vao mot quick action de kich hoat demo.', en: 'No action has run yet. Use a quick action to activate the demo flow.', ja: 'まだアクションは実行されていません。クイック操作を押してデモ状態を更新できます。' }) }}</span>
+                </div>
+              </ng-template>
             </div>
           </article>
         </div>
@@ -349,7 +382,7 @@ import { ChartCardComponent } from './chart-card.component';
           <article class="panel-card p-4 p-lg-5 h-100">
             <div class="soft-label mb-2">{{ text(workspace.activityTitle) }}</div>
             <div class="timeline-line d-grid gap-3">
-              <div class="d-flex align-items-start gap-3" *ngFor="let item of workspace.activityItems">
+              <div class="d-flex align-items-start gap-3" *ngFor="let item of activityFeed()">
                 <span class="timeline-dot"></span>
                 <div class="panel-card p-3 border-0 shadow-none bg-light-subtle flex-grow-1">
                   <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
@@ -465,13 +498,31 @@ export class FeatureWorkspaceViewComponent {
   @Input({ required: true }) backLabel!: TextLike;
 
   protected readonly store = inject(DemoStoreService);
+  protected readonly runtime = inject(DemoRuntimeService);
 
   protected get workspace() {
     return workspaceForFeature(this.feature);
   }
 
+  protected runtimeState() {
+    return this.runtime.stateFor(this.feature.slug);
+  }
+
   protected text(value: TextLike | undefined): string {
     return this.store.text(value);
+  }
+
+  protected executeAction(action: DemoListItem): void {
+    this.runtime.runAction(this.feature, action);
+  }
+
+  protected actionCount(action: DemoListItem): number {
+    return this.runtime.actionCount(this.feature.slug, action);
+  }
+
+  protected activityFeed(): DemoListItem[] {
+    const runtime = this.runtimeState();
+    return [...runtime.activity, ...this.workspace.activityItems].slice(0, 8);
   }
 
   protected toneClass(tone?: string): string {

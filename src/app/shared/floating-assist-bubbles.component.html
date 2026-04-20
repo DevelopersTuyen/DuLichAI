@@ -1,0 +1,113 @@
+<ng-container *ngIf="currentUser() as user">
+  <div class="floating-bubbles">
+    <button type="button" class="floating-bubble chat" (click)="toggleChat()">
+      <span class="bubble-icon">CHAT</span>
+      <span class="bubble-label">{{ text(chatTitle) }}</span>
+      <span class="bubble-count" *ngIf="comms.unreadChatCount() > 0">{{ comms.unreadChatCount() }}</span>
+    </button>
+
+    <button type="button" class="floating-bubble sos" (click)="toggleSos()">
+      <span class="bubble-icon">SOS</span>
+      <span class="bubble-label">{{ text(sosTitle) }}</span>
+      <span class="bubble-count pulse">{{ comms.activeCall() ? 'LIVE' : '24/7' }}</span>
+    </button>
+  </div>
+
+  <button *ngIf="comms.activePanel()" type="button" class="floating-backdrop" (click)="closePanel()"></button>
+
+  <aside class="floating-panel" [class.is-open]="comms.activePanel()" [class.chat-open]="comms.activePanel() === 'chat'" [class.sos-open]="comms.activePanel() === 'sos'">
+    <ng-container [ngSwitch]="comms.activePanel()">
+      <section *ngSwitchCase="'chat'" class="panel-card p-0 overflow-hidden">
+        <header class="panel-header">
+          <div>
+            <div class="soft-label mb-1">{{ text(chatTitle) }}</div>
+            <h3 class="h5 fw-bold mb-1">{{ user.tourCode }}</h3>
+            <p class="small text-secondary mb-0">{{ text({ vi: 'Room nhan tin chung cua truong doan, khach va ops.', en: 'Shared room for leader, guests, and ops.', ja: 'Leader, guest, ops no kyotsu room desu.' }) }}</p>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-dark" (click)="closePanel()">Close</button>
+        </header>
+
+        <div class="panel-body">
+          <div class="quick-reply-row">
+            <button type="button" class="chip-button" *ngFor="let reply of quickReplies()" (click)="useQuickReply(reply)">
+              {{ text(reply) }}
+            </button>
+          </div>
+
+          <div class="chat-thread">
+            <article class="chat-bubble" *ngFor="let message of comms.chatMessages()" [class.self]="message.side === 'self'" [class.ops]="message.side === 'ops'" [class.system]="message.side === 'system'">
+              <div class="chat-meta">
+                <strong>{{ message.sender }}</strong>
+                <span>{{ message.time }}</span>
+              </div>
+              <div class="chat-text">{{ text(message.text) }}</div>
+              <div class="small mt-2 text-secondary" *ngIf="message.meta">{{ text(message.meta) }}</div>
+            </article>
+          </div>
+        </div>
+
+        <footer class="panel-footer">
+          <textarea class="form-control" rows="2" [ngModel]="draft()" (ngModelChange)="draft.set($event)" [placeholder]="text({ vi: 'Nhap tin nhan cho doan...', en: 'Message the group...', ja: 'Group ni message o nyuryoku...' })"></textarea>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-app-primary" (click)="submitMessage()">{{ text({ vi: 'Gui tin', en: 'Send', ja: 'Send' }) }}</button>
+          </div>
+        </footer>
+      </section>
+
+      <section *ngSwitchCase="'sos'" class="panel-card p-0 overflow-hidden">
+        <header class="panel-header danger">
+          <div>
+            <div class="soft-label mb-1">{{ text(sosTitle) }}</div>
+            <h3 class="h5 fw-bold mb-1">{{ text({ vi: 'Duong day khan cap dang san sang', en: 'Emergency lines ready', ja: 'Emergency line ready' }) }}</h3>
+            <p class="small text-secondary mb-0">{{ text({ vi: 'Ban co the goi ngay ma khong roi man hinh hien tai.', en: 'Start a call instantly without leaving the current screen.', ja: 'Genzai no screen o hanarezu ni sugu call dekimasu.' }) }}</p>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-dark" (click)="closePanel()">Close</button>
+        </header>
+
+        <div class="panel-body">
+          <div class="active-call-card" *ngIf="comms.activeCall() as call">
+            <div class="d-flex align-items-start justify-content-between gap-3">
+              <div>
+                <div class="soft-label mb-1">{{ call.status === 'connected' ? text({ vi: 'Dang ket noi', en: 'Connected', ja: 'Connected' }) : text({ vi: 'Dang quay so', en: 'Dialing', ja: 'Dialing' }) }}</div>
+                <h4 class="h6 fw-bold mb-1">{{ text(call.contact.name) }}</h4>
+                <p class="small text-secondary mb-1">{{ call.contact.phone }}</p>
+                <p class="small mb-0">{{ text(call.contact.note) }}</p>
+              </div>
+              <span class="badge-soft danger pulse">{{ call.status === 'connected' ? 'LIVE' : 'CALL' }}</span>
+            </div>
+            <button type="button" class="btn btn-outline-danger btn-sm mt-3" (click)="comms.endEmergencyCall()">{{ text({ vi: 'Ket thuc cuoc goi', en: 'End call', ja: 'End call' }) }}</button>
+          </div>
+
+          <div class="contact-grid">
+            <button type="button" class="contact-chip" *ngFor="let contact of contacts()" (click)="comms.startEmergencyCall(contact)">
+              <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+                <span class="feature-code feature-code-sm">{{ contact.id | uppercase }}</span>
+                <span class="badge-soft" [class.brand]="contact.tone === 'brand'" [class.success]="contact.tone === 'success'" [class.warning]="contact.tone === 'warning'" [class.danger]="contact.tone === 'danger'">{{ contact.phone }}</span>
+              </div>
+              <div class="fw-bold mb-1">{{ text(contact.name) }}</div>
+              <div class="small text-secondary mb-1">{{ text(contact.roleLabel) }}</div>
+              <div class="small">{{ text(contact.note) }}</div>
+            </button>
+          </div>
+
+          <div class="subtle-divider my-4"></div>
+
+          <div class="soft-label mb-2">{{ text({ vi: 'Lich su hotline', en: 'Hotline timeline', ja: 'Hotline timeline' }) }}</div>
+          <div class="timeline-line d-grid gap-3">
+            <div class="d-flex align-items-start gap-3" *ngFor="let item of comms.emergencyLog()">
+              <span class="timeline-dot"></span>
+              <div class="panel-card p-3 border-0 shadow-none bg-light-subtle flex-grow-1">
+                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-1">
+                  <h4 class="h6 fw-bold mb-0">{{ text(item.title) }}</h4>
+                  <span class="badge-soft" [class.brand]="item.tone === 'brand'" [class.success]="item.tone === 'success'" [class.warning]="item.tone === 'warning'" [class.danger]="item.tone === 'danger'">{{ item.badge }}</span>
+                </div>
+                <p class="small text-secondary mb-1" *ngIf="item.meta">{{ text(item.meta) }}</p>
+                <p class="small mb-0" *ngIf="item.note">{{ text(item.note) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </aside>
+</ng-container>

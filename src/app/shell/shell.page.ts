@@ -4,11 +4,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { DemoAuthService } from '../auth/demo-auth.service';
 import { DemoStoreService } from '../demo/demo-store.service';
 import { Lang, lt } from '../demo/demo-data';
+import { FloatingAssistBubblesComponent } from '../shared/floating-assist-bubbles.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FloatingAssistBubblesComponent],
   templateUrl: './shell.page.html',
   styleUrl: './shell.page.scss',
 })
@@ -31,16 +32,17 @@ export class ShellPage {
 
     return user.role === 'leader'
       ? [
-          { label: lt('Tổng quan', 'Overview', '概要'), route: '/app/leader', code: 'HM' },
-          { label: lt('Check-in', 'Check-in', '点呼'), route: '/app/leader/smart-check-in', code: 'QR' },
-          { label: lt('Lịch trình', 'Itinerary', '旅程'), route: '/app/leader/dynamic-itinerary', code: 'IT' },
-          { label: lt('Quỹ đoàn', 'Funds', '会計'), route: '/app/leader/tour-fund-tracker', code: 'FN' },
+          { label: lt('Tong quan', 'Overview', 'Overview'), route: '/app/leader', code: 'HM' },
+          { label: lt('Check-in', 'Check-in', 'Check-in'), route: '/app/leader/smart-check-in', code: 'QR' },
+          { label: lt('Lich trinh', 'Itinerary', 'Itinerary'), route: '/app/leader/dynamic-itinerary', code: 'IT' },
+          { label: lt('Quy doan', 'Funds', 'Funds'), route: '/app/leader/tour-fund-tracker', code: 'FN' },
+          { label: lt('Bao cao', 'Reports', 'Reports'), route: '/app/leader/analytics-report', code: 'RP' },
         ]
       : [
-          { label: lt('Trang chủ', 'Home', 'ホーム'), route: '/app/tourist', code: 'HM' },
-          { label: lt('Tiền Việt', 'VND', '紙幣'), route: '/app/tourist/vnd-smart-scanner', code: 'VN' },
-          { label: lt('An toàn', 'Safety', '安全'), route: '/app/tourist/scam-alert', code: 'AL' },
-          { label: lt('AI Buddy', 'AI Buddy', 'AI'), route: '/app/tourist/ai-local-buddy', code: 'AI' },
+          { label: lt('Trang chu', 'Home', 'Home'), route: '/app/tourist', code: 'HM' },
+          { label: lt('Tien Viet', 'VND', 'VND'), route: '/app/tourist/vnd-smart-scanner', code: 'VN' },
+          { label: lt('An toan', 'Safety', 'Safety'), route: '/app/tourist/scam-alert', code: 'AL' },
+          { label: lt('AI Buddy', 'AI Buddy', 'AI Buddy'), route: '/app/tourist/ai-local-buddy', code: 'AI' },
         ];
   });
 
